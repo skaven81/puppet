@@ -67,7 +67,7 @@ file { '/var/www/html/www.counterstonecreations.com':
 } -> 
 mount { '/var/www/html/www.rainbowlakeestate.net':
     # AWS volume id vol-1a0b8f02
-    device  => 'UUID=01ddb84c-0c3b-4408-81fe-37457b83ddc3'
+    device  => 'UUID=01ddb84c-0c3b-4408-81fe-37457b83ddc3',
     ensure  => 'mounted',
     atboot  => true,
     fstype  => 'xfs',
