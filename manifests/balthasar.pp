@@ -39,7 +39,7 @@ package { [ 'puppet' ]:
 
 # Extra volumes
 file { '/var/www/html/www.rainbowlakeestate.net':
-    ensure  => 'directory'
+    ensure  => 'directory',
     user    => 'root',
     group   => 'root',
     seluser => 'unconfined_u',
