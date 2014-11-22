@@ -39,7 +39,8 @@ package { [ 'puppet' ]:
 
 # Extra volumes
 mount { '/var/www/html/www.rainbowlakeestate.net':
-    device  => '/dev/xvdf',
+    # AWS volume id vol-ff6ce8e7j
+    device  => 'UUID=b06d95ee-9ca7-4cc1-a79b-1cb26f4f9c09',
     ensure  => 'mounted',
     atboot  => true,
     fstype  => 'xfs',
