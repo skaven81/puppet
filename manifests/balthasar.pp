@@ -35,3 +35,13 @@ package { [ 'puppet' ]:
     allow_virtual => true,
 }
             
+# Apache configuration
+class { 'apache':
+    default_confd_files => false,
+    default_mods        => false,
+    docroot             => '/var/www/html',
+    package_ensure      => 'present',
+    service_ensure      => 'running',
+    server_signature    => 'Off',
+    trace_enable        => 'Off',
+}
