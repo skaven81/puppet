@@ -39,6 +39,7 @@ package { [ 'puppet' ]:
 class { 'apache':
     default_confd_files => false,
     default_mods        => false,
+    default_vhost       => true,
     docroot             => '/var/www/html',
     package_ensure      => 'present',
     service_ensure      => 'running',
