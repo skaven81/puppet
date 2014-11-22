@@ -38,6 +38,14 @@ package { [ 'puppet' ]:
 }
 
 # Extra volumes
+file { '/var/www/html/www.rainbowlakeestate.net':
+    ensure  => 'directory'
+    owner   => 'root',
+    group   => 'root',
+    seluser => 'unconfined_u',
+    selrole => 'object_r',
+    seltype => 'httpd_sys_content_t',
+} -> 
 mount { '/var/www/html/www.rainbowlakeestate.net':
     # AWS volume id vol-ff6ce8e7j
     device  => 'UUID=b06d95ee-9ca7-4cc1-a79b-1cb26f4f9c09',
