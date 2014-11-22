@@ -30,9 +30,11 @@ ssh_authorized_key { 'token@aws':
 }
 
 # Packages
+Package {
+    allow_virtual => true,
+}
 package { [ 'puppet' ]:
     ensure  => 'latest',
-    allow_virtual => true,
 }
             
 # Apache configuration
