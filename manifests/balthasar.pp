@@ -8,7 +8,7 @@ account {'ec2-user':
     shell   => '/bin/bash',
     manage_home => true,
     create_group => true,
-    groups  => [ 'adm', 'wheel', 'systemd-journal' ]
+    groups  => [ 'adm', 'wheel', 'systemd-journal' ],
     ssh_key => file('pubkeys/token'),
     comment => 'AWS-provided login',
 }
