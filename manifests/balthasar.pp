@@ -38,40 +38,35 @@ package { [ 'puppet' ]:
 }
 
 # Extra volumes
-file { '/var/www/html/www.rainbowlakeestate.net':
-    ensure  => 'directory',
-    owner   => 'root',
-    group   => 'root',
-    seluser => 'unconfined_u',
-    selrole => 'object_r',
-    seltype => 'httpd_sys_content_t',
-    recurse => true,
-} -> 
-mount { '/var/www/html/www.rainbowlakeestate.net':
-    # AWS volume id vol-ff6ce8e7
-    device  => 'UUID=b06d95ee-9ca7-4cc1-a79b-1cb26f4f9c09',
-    ensure  => 'mounted',
-    atboot  => true,
-    fstype  => 'xfs',
-    options => 'ro,noatime',
+define http_mount (
+    $path = $title,
+    $uuid = undef,
+) {
+    file { $path:
+        ensure  => 'directory',
+        owner   => 'root',
+        group   => 'root',
+        seluser => 'unconfined_u',
+        selrole => 'object_r',
+        seltype => 'httpd_sys_content_t',
+        recurse => true,
+    } -> 
+    mount { $path:
+        device  => "UUID=${uuid}",
+        ensure  => 'mounted',
+        atboot  => true,
+        fstype  => 'xfs',
+        options => 'ro,noatime',
+    }
 }
 
-file { '/var/www/html/www.counterstonecreations.com':
-    ensure  => 'directory',
-    owner   => 'root',
-    group   => 'root',
-    seluser => 'unconfined_u',
-    selrole => 'object_r',
-    seltype => 'httpd_sys_content_t',
-    recurse => true,
-} -> 
-mount { '/var/www/html/www.rainbowlakeestate.net':
+http_mount { '/var/www/html/www.rainbowlakeestate.net':
+    # AWS volume id vol-ff6ce8e7
+    uuid => 'b06d95ee-9ca7-4cc1-a79b-1cb26f4f9c09', 
+}
+http_mount { '/var/www/html/www.counterstonecreations.com':
     # AWS volume id vol-1a0b8f02
-    device  => 'UUID=01ddb84c-0c3b-4408-81fe-37457b83ddc3',
-    ensure  => 'mounted',
-    atboot  => true,
-    fstype  => 'xfs',
-    options => 'ro,noatime',
+    uuid => '01ddb84c-0c3b-4408-81fe-37457b83ddc3',
 }
             
 # Apache configuration
