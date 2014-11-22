@@ -13,6 +13,7 @@ account {'ec2-user':
     groups  => [ 'adm', 'wheel', 'systemd-journal' ],
     ssh_key => $::pubkeys::aws,
     ssh_key_type => $::pubkeys::aws_type,
+    purge_ssh_keys => true,
     comment => 'AWS-provided login',
 }
 
@@ -27,5 +28,4 @@ ssh_authorized_key { 'token@aws':
     key     => $::pubkeys::token,
     type    => $::pubkeys::token_type,
 }
-
 

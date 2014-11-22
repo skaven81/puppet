@@ -67,6 +67,10 @@
 #   the ssh_authorized_key's 'type' parameter.
 #   Defaults to 'ssh-rsa'.
 #
+# [*purge_ssh_keys*]
+#   Whether or not to purge any unmanaged contents from the
+#   authorized_keys file.  Defaults to 'false'
+#
 # [*comment*]
 #   Sets comment metadata for the user
 #
@@ -94,7 +98,7 @@ define account(
   $username = $title, $password = '!', $shell = '/bin/bash', $manage_home = true,
   $home_dir = undef, $create_group = true, $system = false, $uid = undef,
   $ssh_key = undef, $ssh_key_type = 'ssh-rsa', $groups = [], $ensure = present,
-  $comment= "$title Puppet-managed User", $gid = 'users'
+  $comment= "$title Puppet-managed User", $gid = 'users', $purge_ssh_keys => false
 ) {
 
   if $home_dir == undef {
@@ -159,6 +163,7 @@ define account(
       home       => $home_dir_real,
       managehome => $manage_home,
       system     => $system,
+      purge_ssh_keys => $purge_ssh_keys,
   }
 
   file {
