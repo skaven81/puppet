@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+    echo "Usage: $0 [hostname]"
+    exit 1
+fi
+
+hn=$1
+shift
+
+if [ ! -r manifests/$hn.pp ]; then
+    echo "Cannot find manifests/$hn.pp"
+    exit 1
+fi
+
+sudo puppet apply --modulepath=modules manifests/$hn.pp $@
