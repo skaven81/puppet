@@ -1,7 +1,14 @@
 #!/bin/bash
 
+PATH=/bin:/usr/bin:/sbin:/usr/sbin:/opt/puppet/bin
+
 if [ -z "$1" ]; then
     echo "Usage: $0 [hostname]"
+    exit 1
+fi
+
+if [ `id -u` -gt 0 ]; then
+    echo "Error: Must be root"
     exit 1
 fi
 
@@ -13,4 +20,4 @@ if [ ! -r manifests/$hn.pp ]; then
     exit 1
 fi
 
-sudo puppet apply --modulepath=modules manifests/$hn.pp $@
+puppet apply --modulepath=modules manifests/$hn.pp $@
