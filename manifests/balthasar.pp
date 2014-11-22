@@ -44,7 +44,7 @@ mount { '/var/www/html/www.rainbowlakeestate.net':
     ensure  => 'mounted',
     atboot  => true,
     fstype  => 'xfs',
-    options => 'ro,noatime',
+    #options => 'ro,noatime',
 }
             
 # Apache configuration
