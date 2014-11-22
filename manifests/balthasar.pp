@@ -16,4 +16,11 @@ account {'ec2-user':
     comment => 'AWS-provided login',
 }
 
+# Add a few more authorized keys
+ssh_authorized_key {
+    user    => 'ec2-user',
+    key     => $::pubkeys::galaxy_note_4,
+    type    => $::pubkeys::galaxy_note_4_type,
+}
+
 
