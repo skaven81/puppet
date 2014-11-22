@@ -36,6 +36,15 @@ Package {
 package { [ 'puppet' ]:
     ensure  => 'latest',
 }
+
+# Extra volumes
+mount { '/var/www/html/www.rainbowlakeestate.net':
+    device  => '/dev/xvdf',
+    ensure  => 'mounted',
+    atboot  => true,
+    fstype  => 'xfs',
+    options => 'ro,noatime',
+}
             
 # Apache configuration
 class { 'apache':
