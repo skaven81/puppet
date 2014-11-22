@@ -2,6 +2,8 @@
 # the AWS instance that hosts a
 # simple web server.
 
+include ::pubkeys
+
 account {'ec2-user':
     ensure  => 'present',
     uid     => 1000,
@@ -9,7 +11,7 @@ account {'ec2-user':
     manage_home => true,
     create_group => true,
     groups  => [ 'adm', 'wheel', 'systemd-journal' ],
-    ssh_key => file('pubkeys/token'),
+    ssh_key => $::pubkeys::token,
     comment => 'AWS-provided login',
 }
 
