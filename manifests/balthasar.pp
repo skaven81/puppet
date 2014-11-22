@@ -29,3 +29,8 @@ ssh_authorized_key { 'token@aws':
     type    => $::pubkeys::token_type,
 }
 
+# Packages
+package { [ 'puppet' ]:
+    ensure  => 'latest'
+}
+            
