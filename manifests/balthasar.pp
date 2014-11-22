@@ -41,9 +41,15 @@ package { [ 'puppet' ]:
 class { 'apache':
     default_confd_files => false,
     default_mods        => false,
-    default_vhost       => true,
+    default_vhost       => false,
     package_ensure      => 'present',
     service_ensure      => 'running',
     server_signature    => 'Off',
     trace_enable        => 'Off',
+}
+class { 'apache::mod::dir': }
+apache::vhost { 'main':
+    port           => 80,
+    docroot        => '/var/www/html',
+    directoryindex => 'index.html index.htm',
 }
