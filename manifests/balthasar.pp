@@ -47,7 +47,3 @@ class { 'apache':
     server_signature    => 'Off',
     trace_enable        => 'Off',
 }
-apache::vhost { 'rainbowlakeestate.net':
-    port    => '80',
-    docroot => '/var/www/html/rainbowlakeestate.net',
-}
