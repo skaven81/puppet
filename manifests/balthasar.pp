@@ -31,6 +31,7 @@ ssh_authorized_key { 'token@aws':
 
 # Packages
 package { [ 'puppet' ]:
-    ensure  => 'latest'
+    ensure  => 'latest',
+    allow_virtual => true,
 }
             
