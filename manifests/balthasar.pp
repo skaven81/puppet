@@ -40,7 +40,7 @@ package { [ 'puppet' ]:
 # Extra volumes
 file { '/var/www/html/www.rainbowlakeestate.net':
     ensure  => 'directory',
-    user    => 'root',
+    owner   => 'root',
     group   => 'root',
     seluser => 'unconfined_u',
     selrole => 'object_r',
