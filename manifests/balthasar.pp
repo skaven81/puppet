@@ -12,6 +12,7 @@ account {'ec2-user':
     create_group => true,
     groups  => [ 'adm', 'wheel', 'systemd-journal' ],
     ssh_key => $::pubkeys::token,
+    ssh_key_type => $::pubkeys::token_type,
     comment => 'AWS-provided login',
 }
 
