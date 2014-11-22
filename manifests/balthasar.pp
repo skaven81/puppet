@@ -46,6 +46,8 @@ class { 'apache':
     service_ensure      => 'running',
     server_signature    => 'Off',
     trace_enable        => 'Off',
-    port                => 80,
-    docroot             => '/var/www/html',
+}
+apache::vhost { 'rainbowlakeestate.net':
+    port    => '80',
+    docroot => '/var/www/html/rainbowlakeestate.net',
 }
