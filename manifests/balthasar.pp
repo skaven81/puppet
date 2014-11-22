@@ -2,4 +2,4 @@
 # the AWS instance that hosts a
 # simple web server.
 
-include ::setup_skaven
+class {'ec2_user':}
