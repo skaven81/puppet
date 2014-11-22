@@ -47,7 +47,7 @@ class { 'apache':
     server_signature    => 'Off',
     trace_enable        => 'Off',
 }
-apache::vhost { '*':
+apache::vhost { 'default':
     port    => 80,
     docroot => '/var/www/html',
 }
