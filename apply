@@ -20,4 +20,11 @@ if [ ! -r manifests/$hn.pp ]; then
     exit 1
 fi
 
-puppet apply --modulepath=modules manifests/$hn.pp $@
+# Puppet 2.7 didn't have a --test option
+testopt=""
+if [[ "$1" =~ "-t" ]]; then
+    shift
+    testopt="--verbose --detailed-exitcodes --show_diff"
+fi
+
+puppet apply --modulepath=modules manifests/$hn.pp $testopt $@
