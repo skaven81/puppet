@@ -48,6 +48,7 @@ cron { 'puppet':
     ensure  => 'present',
     user    => 'root',
     command => '/usr/bin/puppet apply --modulepath=/raid6/puppet/modules /raid6/puppet/manifests/www.pp',
+    minute  => 0,
     hour    => 12,
 }
 
