@@ -80,6 +80,7 @@ class { 'apache':
     trace_enable        => 'Off',
 }
 class { 'apache::mod::dir': }
+class { 'apache::mod::php': }
 apache::vhost { 'main':
     port           => 80,
     docroot        => '/var/www/html',
