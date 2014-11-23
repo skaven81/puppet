@@ -56,7 +56,7 @@ define http_mount (
         ensure  => 'mounted',
         atboot  => true,
         fstype  => 'xfs',
-        options => 'ro,noatime',
+        options => 'noatime',
     }
 }
 
