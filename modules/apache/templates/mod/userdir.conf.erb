@@ -19,8 +19,8 @@
       <%- if scope.function_versioncmp([@apache_version, '2.4']) >= 0 -%>
       Require all denied
       <%- else -%>
-      Order allow,deny
-      Allow from all
+      Order deny,allow
+      Deny from all
       <%- end -%>
     </LimitExcept>
   </Directory>

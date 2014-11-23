@@ -137,49 +137,76 @@ define account(
       $dir_ensure = directory
       $dir_owner  = $username
       $dir_group  = $primary_group
-      User[$title] -> File["${title}_home"] -> File["${title}_sshdir"]
     }
     absent: {
       $dir_ensure = absent
       $dir_owner  = undef
       $dir_group  = undef
-      File["${title}_sshdir"] -> File["${title}_home"] -> User[$title]
     }
     default: {
       err( "Invalid value given for ensure: ${ensure}. Must be one of present,absent." )
     }
   }
 
-  user {
-    $title:
-      ensure     => $ensure,
-      name       => $username,
-      comment    => $comment,
-      uid        => $uid,
-      password   => $password,
-      shell      => $shell,
-      gid        => $primary_group,
-      groups     => $groups,
-      home       => $home_dir_real,
-      managehome => $manage_home,
-      system     => $system,
-      purge_ssh_keys => $purge_ssh_keys,
+  if $puppetversion =~ /^2/ {
+      user {
+        $title:
+          ensure     => $ensure,
+          name       => $username,
+          comment    => $comment,
+          uid        => $uid,
+          password   => $password,
+          shell      => $shell,
+          gid        => $primary_group,
+          groups     => $groups,
+          home       => $home_dir_real,
+          managehome => $manage_home,
+          system     => $system,
+      }
+  }
+  else {
+      user {
+        $title:
+          ensure     => $ensure,
+          name       => $username,
+          comment    => $comment,
+          uid        => $uid,
+          password   => $password,
+          shell      => $shell,
+          gid        => $primary_group,
+          groups     => $groups,
+          home       => $home_dir_real,
+          managehome => $manage_home,
+          system     => $system,
+          purge_ssh_keys => $purge_ssh_keys,
+      }
   }
 
-  file {
-    "${title}_home":
-      ensure  => $dir_ensure,
-      path    => $home_dir_real,
-      owner   => $dir_owner,
-      group   => $dir_group,
-      mode    => 0750;
+  if $manage_home {
+      case $ensure {
+        present: {
+          User[$title] -> File["${title}_home"] -> File["${title}_sshdir"]
+        }
+        absent: {
+          File["${title}_sshdir"] -> File["${title}_home"] -> User[$title]
+        }
+      }
 
-    "${title}_sshdir":
-      ensure  => $dir_ensure,
-      path    => "${home_dir_real}/.ssh",
-      owner   => $dir_owner,
-      group   => $dir_group,
-      mode    => 0700;
+      file {
+        "${title}_home":
+          ensure  => $dir_ensure,
+          path    => $home_dir_real,
+          owner   => $dir_owner,
+          group   => $dir_group,
+          mode    => 0750;
+
+        "${title}_sshdir":
+          ensure  => $dir_ensure,
+          path    => "${home_dir_real}/.ssh",
+          owner   => $dir_owner,
+          group   => $dir_group,
+          mode    => 0700;
+      }
   }
 
   if $ssh_key != undef {
