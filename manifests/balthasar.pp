@@ -83,5 +83,5 @@ class { 'apache::mod::dir': }
 apache::vhost { 'main':
     port           => 80,
     docroot        => '/var/www/html',
-    directoryindex => 'index.html index.htm',
+    directoryindex => 'index.html index.htm index.php',
 }
