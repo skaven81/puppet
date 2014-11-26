@@ -88,6 +88,7 @@ class { 'apache':
     default_confd_files => false,
     default_mods        => false,
     default_vhost       => true,
+    default_ssl_vhost   => true,
     package_ensure      => 'present',
     service_ensure      => 'running',
     server_signature    => 'On',

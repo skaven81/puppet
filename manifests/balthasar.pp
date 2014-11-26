@@ -73,7 +73,8 @@ http_mount { '/var/www/html/www.counterstonecreations.com':
 class { 'apache':
     default_confd_files => false,
     default_mods        => false,
-    default_vhost       => false,
+    default_vhost       => true,
+    default_ssl_vhost   => true,
     package_ensure      => 'present',
     service_ensure      => 'running',
     server_signature    => 'Off',
@@ -81,8 +82,11 @@ class { 'apache':
 }
 class { 'apache::mod::dir': }
 class { 'apache::mod::php': }
-apache::vhost { 'main':
-    port           => 80,
+Apache::Vhost <| title == 'default' |> {
+    docroot        => '/var/www/html',
+    directoryindex => 'index.html index.htm index.php',
+}
+Apache::Vhost <| title == 'default-ssl' |> {
     docroot        => '/var/www/html',
     directoryindex => 'index.html index.htm index.php',
 }
