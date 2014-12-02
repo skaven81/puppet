@@ -4,13 +4,17 @@
 
 include ::pubkeys
 
+group { 'www':
+    ensure  => 'present',
+    gid     => 1010,
+} ->
 account {'ec2-user':
     ensure  => 'present',
     uid     => 1000,
     shell   => '/bin/bash',
     manage_home => true,
     create_group => true,
-    groups  => [ 'adm', 'wheel', 'systemd-journal' ],
+    groups  => [ 'adm', 'wheel', 'systemd-journal', 'www', ],
     ssh_key => $::pubkeys::aws,
     ssh_key_type => $::pubkeys::aws_type,
     purge_ssh_keys => true,
