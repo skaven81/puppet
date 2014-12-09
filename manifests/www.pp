@@ -47,7 +47,7 @@ host { 'www':
 cron { 'puppet':
     ensure  => 'present',
     user    => 'root',
-    command => '/usr/bin/puppet apply --modulepath=/raid6/puppet/modules /raid6/puppet/manifests/www.pp',
+    command => '/usr/bin/puppet apply --modulepath=/raid6/puppet/modules /raid6/puppet/manifests/www.pp  | grep -v "Finished catalog run"',
     minute  => 0,
     hour    => 12,
 }
