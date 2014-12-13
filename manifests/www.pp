@@ -60,6 +60,7 @@ class { '::geofront::mail_client':
 package { [ 'bitmap-fixed-fonts', 'bitmap-lucida-typewriter-fonts',
             'dejavu-lgc-sans-mono-fonts', 'dejavu-sans-fonts', 'dejavu-sans-mono-fonts', 'dejavu-serif-fonts', ]:
     ensure => 'installed',
+    notify => Service['subsonic'],
 }
 
 # Subsonic
@@ -68,6 +69,7 @@ package { 'subsonic':
 } ->
 service { 'subsonic':
     ensure => 'running',
+    hasrestart => true,
 } ->
 file { '/var/subsonic/music_links':
     ensure => 'directory',
