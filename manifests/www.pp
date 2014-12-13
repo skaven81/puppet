@@ -56,6 +56,12 @@ class { '::geofront::mail_client':
     root_dest => 'paul.krizak@gmail.com',
 }
 
+# Fonts, for Subsonic
+package { [ 'bitmap-fixed-fonts', 'bitmap-lucida-typewriter-fonts',
+            'dejavu-lgc-sans-mono-fonts', 'dejavu-sans-fonts', 'dejavu-sans-mono-fonts', 'dejavu-serif-fonts', ]:
+    ensure => 'installed',
+}
+
 # Subsonic
 package { 'subsonic':
     ensure => 'installed'
