@@ -45,6 +45,7 @@ package { [ 'puppet' ]:
 define http_mount (
     $path = $title,
     $uuid = undef,
+    $ensure = 'present',
 ) {
     file { $path:
         ensure  => 'directory',
@@ -57,7 +58,7 @@ define http_mount (
     } -> 
     mount { $path:
         device  => "UUID=${uuid}",
-        ensure  => 'mounted',
+        ensure  => $ensure,
         atboot  => true,
         fstype  => 'xfs',
         options => 'noatime',
