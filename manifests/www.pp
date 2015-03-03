@@ -31,7 +31,7 @@ package { [ 'puppet' ]:
 # NFS mounts
 mount { '/raid6':
     ensure => 'mounted',
-    device => 'geofront:/raid6',
+    device => '192.168.1.50:/raid6',
     fstype => 'nfs',
     options => 'ro',
     dump    => '0',
