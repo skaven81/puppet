@@ -84,7 +84,7 @@ host { 'geofront':
 cron { 'puppet':
     ensure  => 'present',
     user    => 'root',
-    command => '/usr/bin/puppet apply --modulepath=/raid6/puppet/modules /raid6/puppet/manifests/crashplan.pp  | grep -v "Finished catalog run"',
+    command => '/usr/bin/puppet apply --modulepath=/raid5/puppet/modules /raid5/puppet/manifests/crashplan.pp  | grep -v "Finished catalog run"',
     minute  => 0,
     hour    => 12,
 }
