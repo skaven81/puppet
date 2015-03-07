@@ -31,7 +31,7 @@ package { [ 'puppet' ]:
 # NFS mounts
 mount { '/raid6':
     ensure => 'mounted',
-    device => '192.168.1.50:/raid6',
+    device => 'geofront:/raid6',
     fstype => 'nfs',
     options => 'ro',
     dump    => '0',
@@ -42,6 +42,11 @@ host { 'www':
     ensure => 'present',
     ip     => $ipaddress,
     host_aliases => 'www.ska',
+}
+host { 'geofront':
+    ensure => 'present',
+    ip     => '192.168.1.50',
+    host_aliases => 'geofront.ska',
 }
 
 cron { 'puppet':
