@@ -1,0 +1,48 @@
+### puppetlabs.repo
+#
+# Puppetlabs repository file
+#
+# managed by Puppet, local changes will be overwritten
+#
+[puppetlabs-products]
+name=Puppet Labs Products El 6 - $basearch
+<%= @elPuppetlabsProducts %>
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppetlabs
+enabled=1
+gpgcheck=1
+
+[puppetlabs-deps]
+name=Puppet Labs Dependencies El 6 - $basearch
+<%= @elPuppetlabsDeps %>
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppetlabs
+enabled=1
+gpgcheck=1
+
+[puppetlabs-devel]
+name=Puppet Labs Devel El 6 - $basearch
+<%= @elPuppetlabsDevel %>
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppetlabs
+enabled=0
+gpgcheck=1
+
+[puppetlabs-products-source]
+name=Puppet Labs Products El 6 - $basearch - Source
+<%= @elPuppetlabsProductsSource %>
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppetlabs
+failovermethod=priority
+enabled=0
+gpgcheck=1
+
+[puppetlabs-deps-source]
+name=Puppet Labs Source Dependencies El 6 - $basearch - Source
+<%= @elPuppetlabsDepsSource %>
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppetlabs
+enabled=0
+gpgcheck=1
+
+[puppetlabs-devel-source]
+name=Puppet Labs Devel El 6 - $basearch - Source
+<%= @elPuppetlabsDevelSource %>
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppetlabs
+enabled=0
+gpgcheck=1

@@ -1,0 +1,11 @@
+### ssmtpd.conf
+#
+# sSMTP configuation file
+#
+# managed by Puppet, local changes will be overwritten
+#
+
+root=<%= @rootEmail %>
+mailhub=<%= @mailHub %>
+
+FromLineOverride=YES

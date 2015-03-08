@@ -57,8 +57,12 @@ cron { 'puppet':
     hour    => 12,
 }
 
-class { '::geofront::mail_client':
-    root_dest => 'paul.krizak@gmail.com',
+class { '::ssmtp':
+    rootEmail => 'paul.krizak@gmail.com',
+    mailHub => '192.168.1.50',
+} ->
+package { 'postfix':
+    ensure => 'absent',
 }
 
 # Fonts, for Subsonic
