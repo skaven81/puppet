@@ -45,10 +45,9 @@ class ssmtp (
 
   # Start workflow
   if $ssmtp::params::linux {
-    # Containment
-    contain ssmtp::package
-    contain ssmtp::config
-    contain ssmtp::service
+    include ssmtp::package
+    include ssmtp::config
+    include ssmtp::service
 
     Class['ssmtp::package'] ->
     Class['ssmtp::config'] ->
