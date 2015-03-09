@@ -55,6 +55,7 @@ file { '/etc/postfix/cacert.pem':
     owner   => 'root',
     group   => 'root',
     mode    => '444',
+    # Equifax Secure CA
     content => "-----BEGIN CERTIFICATE-----
 MIIDIDCCAomgAwIBAgIENd70zzANBgkqhkiG9w0BAQUFADBOMQswCQYDVQQGEwJV
 UzEQMA4GA1UEChMHRXF1aWZheDEtMCsGA1UECxMkRXF1aWZheCBTZWN1cmUgQ2Vy
