@@ -39,8 +39,9 @@ class { '::postfix::server':
         smtp_tls_CAfile => '/etc/postfix/cacert.pem',
         mynetworks_style => 'subnet',
         mynetworks => '192.168.1.0/24, 127.0.0.1/8',
+        relayhost => '[smtp.gmail.com]:587',
         },
-    relayhost => '[smtp.gmail.com]:587',
+    inet_interfaces => '$myhostname, localhost',
 } ->
 file { '/etc/postfix/password':
     ensure  => 'file',
@@ -76,8 +77,6 @@ A4GBAFjOKer89961zgK5F7WF0bnj4JXMJTENAKaSbn+2kmOeUJXRmm/kEd5jhW6Y
 1voqZiegDfqnc1zqcPGUIWVEX/r87yloqaKHee9570+sB3c4
 -----END CERTIFICATE-----\n",
 }
-
-
 exec { 'postmap':
     refreshonly => true,
     command     => "/usr/sbin/postmap /etc/postfix/password",
