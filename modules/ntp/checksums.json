@@ -1,0 +1,15 @@
+{
+  "Gemfile": "61db3859b6adb4a339160e0f7ab54f9c",
+  "LICENSE": "93c010e8ed18b69689a42248d280dd36",
+  "Modulefile": "56c77e4e947fadbc8daef7f559e16406",
+  "README.md": "21d39f906339b0d16aa7f2d48d0452d9",
+  "Rakefile": "87ee3b5b114ae2b1eaaedaf0cd50df37",
+  "manifests/init.pp": "48c7a4d85e494916d223479d0cecff2a",
+  "metadata.json": "9c2f4e8a7af10cf4722c74683946e5c4",
+  "spec/classes/init_spec.rb": "890705219f73f6ea53d60358b55afa88",
+  "spec/spec_helper.rb": "0db89c9a486df193c0e40095422e19dc",
+  "templates/ntp.conf.erb": "20f087211dcdb08a94b6f06ede7a5751",
+  "templates/solaris_admin_file.erb": "5ea882294e884fba093b0b041fdd72e7",
+  "templates/step-tickers.erb": "76e5a5b08d3fa3cd8c50cd4d352346d1",
+  "tests/init.pp": "4a7666d02e4a3d43324f16a37c8802e9"
+}

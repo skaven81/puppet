@@ -81,6 +81,10 @@ host { 'geofront':
     host_aliases => 'geofront.ska',
 }
 
+class { '::ntp':
+    servers => [ '192.168.1.1' ],
+}
+
 cron { 'puppet':
     ensure  => 'present',
     user    => 'root',

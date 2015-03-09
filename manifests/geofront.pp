@@ -83,3 +83,8 @@ exec { 'postmap':
     creates     => "/etc/postfix/password.db",
 }
  
+class { '::ntp':
+    servers => [ '192.168.1.1' ],
+}
+
+
