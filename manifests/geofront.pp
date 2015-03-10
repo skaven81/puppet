@@ -14,6 +14,32 @@ account {'root':
     ssh_key => $::pubkeys::token,
     ssh_key_type => $::pubkeys::token_type,
     purge_ssh_keys => true,
+    password => '$6$S5YgP.B.$RiWlaVMnf7xSvpgaskTdvRwxrYyTvWBmllyEaTSSQK4BBHvoBkX6C5T3/HX9Jc5g4A1.VpWGuv4IDV9oGy1yE1',
+}
+# Add an extra authorized key for root's login
+# so I can login using my phone too
+ssh_authorized_key { 'galaxy_note_4@geofront':
+    user    => 'root',
+    key     => $::pubkeys::galaxy_note_4,
+    type    => $::pubkeys::galaxy_note_4_type,
+}
+account {'skaven':
+    ensure      => 'present',
+    uid         => 1000,
+    shell       => '/bin/bash',
+    home_dir    => '/home/skaven',
+    manage_home => false,
+    create_group => false,
+    groups      => [ 'users', 'skaven', 'wheel', 'kvm' ],
+}
+account {'lori':
+    ensure      => 'present',
+    uid         => 500,
+    shell       => '/bin/bash',
+    home_dir    => '/home/lori',
+    manage_home => false,
+    create_group => false,
+    groups      => [ 'users', 'lori' ],
 }
 
 # Packages
@@ -24,7 +50,7 @@ package { [ 'puppet' ]:
 cron { 'puppet':
     ensure  => 'present',
     user    => 'root',
-    command => '/usr/bin/puppet apply --modulepath=/raid/puppet/modules /raid/puppet/manifests/www.pp  | grep -v "Finished catalog run"',
+    command => '/usr/bin/puppet apply --modulepath=/raid/puppet/modules /raid/puppet/manifests/geofront.pp  | grep -v "Finished catalog run"',
     minute  => 0,
     hour    => 12,
 }
@@ -88,4 +114,88 @@ class { '::ntp':
     ignore_local_clock => true,
 }
 
+
+# RAID configuration
+mount { '/raid':
+    device => "/dev/mapper/vg_raid-lv_raid",
+    ensure => "mounted",
+    atboot => true,
+    fstype => 'ext3',
+    options => 'defaults',
+    pass    => 2,
+    dump    => 1,
+} ->
+file { '/raid1':
+    ensure => 'link',
+    target => '/raid',
+} ->
+file { '/raid5':
+    ensure => 'link',
+    target => '/raid',
+} ->
+file { '/raid6':
+    ensure => 'link',
+    target => '/raid',
+} ->
+file { '/home':
+    ensure => 'link',
+    target => '/raid6/user',
+}
+
+# SSH configuration
+sshd_config { "ListenAddress":
+    ensure => present,
+    value  => "192.168.1.50",
+    notify => Service['sshd'],
+}
+sshd_config { "PermitRootLogin":
+    ensure => present,
+    value  => "yes",
+    notify => Service['sshd'],
+}
+sshd_config { "AllowUsers":
+    ensure => present,
+    value  => "skaven root",
+    notify => Service['sshd'],
+}
+sshd_config { "PasswordAuthentication":
+    ensure => present,
+    value  => "no", notify => Service['sshd'],
+}
+sshd_config { "AuthorizedKeysFile":
+    ensure => present,
+    value  => ".ssh/authorized_keys",
+    notify => Service['sshd'],
+}
+service { "sshd":
+    ensure => running,
+    hasrestart => true,
+}
+
+# Hosts file and nsswitch
+host { 'geofront':
+    ensure => present,
+    host_aliases => 'geofront.ska',
+    ip => '192.168.1.50',
+}
+host { 'netsvc':
+    ensure => present,
+    host_aliases => 'netsvc.ska',
+    ip => '192.168.1.1',
+} host { 'www':
+    ensure => present,
+    host_aliases => 'www.ska',
+    ip => '192.168.1.51',
+}
+host { 'crashplan':
+    ensure => present,
+    host_aliases => 'crashplan.ska',
+    ip => '192.168.1.52',
+}
+class { 'nsswitch':
+    hosts => ['files', 'dns'],
+    passwd => 'files',
+    shadow => 'files',
+    group  => 'files',
+}
 

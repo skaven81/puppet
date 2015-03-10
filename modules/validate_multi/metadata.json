@@ -1,0 +1,31 @@
+{
+  "name": "trlinkin-validate_multi",
+  "version": "0.1.0",
+  "source": "https://github.com/trlinkin/puppet-validate_multi",
+  "author": "trlinkin",
+  "license": "Apache License, Version 2.0",
+  "summary": "Validate that the first argument given can pass validation of at least one other validator from the puppetlabs/stdlib library.",
+  "description": "UNKNOWN",
+  "project_page": "https://github.com/trlinkin/puppet-validate_multi",
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">=2.3.0"
+    }
+  ],
+  "types": [
+
+  ],
+  "checksums": {
+    "Gemfile": "c131014c590a1ce0ac26d4f8ebe05c7d",
+    "Gemfile.lock": "c9ce5e04055f28ea75509c8de98e126c",
+    "LICENSE": "19cbd64715b51267a47bf3750cc6a8a5",
+    "Modulefile": "e8714e0d4956b6299355dcbc3d8401c9",
+    "README.md": "6a5700bbab540bca7b704fe2f812fbb8",
+    "lib/puppet/parser/functions/validate_multi.rb": "80d7beb68f8868b63a7354661de942c5",
+    "manifests/init.pp": "fbc49b7af0ab244c9e7352979636e086",
+    "spec/spec_helper.rb": "4449b0cafd8f7b2fb440c0cdb0a1f2b3",
+    "spec/unit/puppet/parser/functions/validate_multi_spec.rb": "86432809f946845a02e8670cb096202a",
+    "tests/init.pp": "80437232a1af9c13770d6bf540150ac8"
+  }
+}
