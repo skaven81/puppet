@@ -14,7 +14,7 @@ account {'root':
     ssh_key => $::pubkeys::token,
     ssh_key_type => $::pubkeys::token_type,
     purge_ssh_keys => true,
-    password => '$6$S5YgP.B.$RiWlaVMnf7xSvpgaskTdvRwxrYyTvWBmllyEaTSSQK4BBHvoBkX6C5T3/HX9Jc5g4A1.VpWGuv4IDV9oGy1yE1',
+    password => '$6$Fu6Hrk4t$BCSShVBvCp6XNActMOxyL/EQhqssmKgaydXbNMOG7nulTnXJRgRLpkXxo30pzuMK8AL/qDcphbWplejFrC67Y1',
 }
 # Add an extra authorized key for root's login
 # so I can login using my phone too
