@@ -67,7 +67,7 @@ class { '::postfix::server':
         mynetworks => '192.168.1.0/24, 127.0.0.1/8',
         relayhost => '[smtp.gmail.com]:587',
         },
-    inet_interfaces => '$myhostname, localhost',
+    inet_interfaces => 'localhost',
 } ->
 file { '/etc/postfix/password':
     ensure  => 'file',
@@ -155,7 +155,7 @@ sshd_config { "PermitRootLogin":
 }
 sshd_config { "AllowUsers":
     ensure => present,
-    value  => "skaven root",
+    value  => [ "skaven", "root" ],
     notify => Service['sshd'],
 }
 sshd_config { "PasswordAuthentication":
