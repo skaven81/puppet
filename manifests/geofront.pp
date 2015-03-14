@@ -110,7 +110,6 @@ exec { 'postmap':
 }
  
 class { '::ntp':
-    servers => [ '192.168.1.1' ],
     ignore_local_clock => true,
 }
 

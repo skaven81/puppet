@@ -73,7 +73,6 @@ mount { '/geofront-root/usr/share/ipkungfu':
 include ::geofront::hosts
 
 class { '::ntp':
-    servers => [ '192.168.1.1' ],
     ignore_local_clock => true,
 }
 
