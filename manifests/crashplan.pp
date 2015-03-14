@@ -70,16 +70,7 @@ mount { '/geofront-root/usr/share/ipkungfu':
     pass    => '0',
 }
 
-host { 'crashplan':
-    ensure => 'present',
-    ip     => $ipaddress,
-    host_aliases => 'crashplan.ska',
-}
-host { 'geofront':
-    ensure => 'present',
-    ip     => '192.168.1.50',
-    host_aliases => 'geofront.ska',
-}
+include ::geofront::hosts
 
 class { '::ntp':
     servers => [ '192.168.1.1' ],

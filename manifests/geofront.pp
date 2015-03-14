@@ -173,25 +173,7 @@ service { "sshd":
 }
 
 # Hosts file and nsswitch
-host { 'geofront':
-    ensure => present,
-    host_aliases => 'geofront.ska',
-    ip => '192.168.1.50',
-}
-host { 'netsvc':
-    ensure => present,
-    host_aliases => 'netsvc.ska',
-    ip => '192.168.1.1',
-} host { 'www':
-    ensure => present,
-    host_aliases => 'www.ska',
-    ip => '192.168.1.51',
-}
-host { 'crashplan':
-    ensure => present,
-    host_aliases => 'crashplan.ska',
-    ip => '192.168.1.52',
-}
+include ::geofront::hosts
 class { 'nsswitch':
     hosts => ['files', 'dns'],
     passwd => 'files',

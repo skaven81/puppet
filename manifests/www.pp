@@ -38,16 +38,7 @@ mount { '/raid6':
     pass    => '0',
 }
 
-host { 'www':
-    ensure => 'present',
-    ip     => $ipaddress,
-    host_aliases => 'www.ska',
-}
-host { 'geofront':
-    ensure => 'present',
-    ip     => '192.168.1.50',
-    host_aliases => 'geofront.ska',
-}
+include ::geofront::hosts
 
 class { '::ntp':
     servers => [ '192.168.1.1' ],
