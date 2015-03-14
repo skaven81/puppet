@@ -17,7 +17,7 @@ class geofront::hosts {
     host { 'crashplan':
         ensure => present,
         host_aliases => 'crashplan.attlocal.net',
-        ip => '192.168.1.52',
+        ip => '192.168.1.53',
     }
     host { 'token':
         ensure => present,
