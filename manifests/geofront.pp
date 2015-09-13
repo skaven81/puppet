@@ -55,6 +55,21 @@ cron { 'puppet':
     hour    => 12,
 }
 
+file { '/etc/cron.weekly/astro_photo_cleanup':
+    ensure  => 'present',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0755',
+    content => '#!/bin/bash
+IFS=$\'\n\t\'
+find /raid/astro_photos -iname *.avi | \
+while read line; do 
+    newfile=`echo $line | sed -e \'s/.avi$/.zip/i\'`
+    zip -9 -m $newfile $line
+done
+',
+}
+
 # Mail relay configuration
 class { '::postfix::server':
     extra_main_parameters => {
