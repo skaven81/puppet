@@ -62,10 +62,11 @@ file { '/etc/cron.weekly/astro_photo_cleanup':
     mode    => '0755',
     content => '#!/bin/bash
 IFS=$\'\n\t\'
-find /raid/astro_photos -iname *.avi | \
-while read line; do 
-    newfile=`echo $line | sed -e \'s/.avi$/.zip/i\'`
-    zip -9 -m $newfile $line
+for ext in avi nef tif; do
+    find /raid/astro_photos -mtime +7 -iname *.$ext | \
+    while read line; do 
+        zip -9 -m $line.zip $line
+    done
 done
 ',
 }
