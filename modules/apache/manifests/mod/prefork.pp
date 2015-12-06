@@ -64,7 +64,21 @@ class apache::mod::prefork (
       }
     }
     default: {
-      fail("Unsupported osfamily ${::osfamily}")
+      if versioncmp($apache_version, '2.4') >= 0 {
+        ::apache::mpm{ 'prefork':
+          apache_version => $apache_version,
+        }
+      }
+      else {
+        file_line { '/etc/sysconfig/httpd prefork enable':
+          ensure  => present,
+          path    => '/etc/sysconfig/httpd',
+          line    => '#HTTPD=/usr/sbin/httpd.worker',
+          match   => '#?HTTPD=/usr/sbin/httpd.worker',
+          require => Package['httpd'],
+          notify  => Service['httpd'],
+        }
+      }
     }
   }
 }

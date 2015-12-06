@@ -29,7 +29,7 @@ class apache::version {
       $default = '2.2'
     }
     default: {
-      fail("Class['apache::version']: Unsupported osfamily: ${::osfamily}")
+      $default = '2.2'
     }
   }
 }
