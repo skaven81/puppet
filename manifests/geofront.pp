@@ -30,7 +30,7 @@ account {'skaven':
     home_dir    => '/home/skaven',
     manage_home => false,
     create_group => false,
-    groups      => [ 'users', 'skaven', 'wheel', 'kvm' ],
+    groups      => [ 'users', 'skaven', 'wheel', 'kvm', 'dockerroot' ],
 }
 account {'lori':
     ensure      => 'present',
@@ -196,3 +196,15 @@ class { 'nsswitch':
     group  => 'files',
 }
 
+# Docker configuration
+package { 'docker-io':
+    ensure => 'installed',
+} ->
+service { 'docker':
+    ensure => 'running',
+    enable => 'true',
+} ->
+file { '/var/run/docker.sock':
+    owner => 'root',
+    group => 'dockerroot',
+}
