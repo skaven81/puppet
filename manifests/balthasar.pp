@@ -10,11 +10,11 @@ group { 'www':
 } ->
 account {'ec2-user':
     ensure  => 'present',
-    uid     => 1000,
+    uid     => 500,
     shell   => '/bin/bash',
     manage_home => true,
     create_group => true,
-    groups  => [ 'adm', 'wheel', 'systemd-journal', 'www', ],
+    groups  => [ 'wheel' ],
     ssh_key => $::pubkeys::aws,
     ssh_key_type => $::pubkeys::aws_type,
     purge_ssh_keys => true,
@@ -34,9 +34,6 @@ ssh_authorized_key { 'token@aws':
 }
 
 # Packages
-Package {
-    allow_virtual => true,
-}
 package { [ 'puppet' ]:
     ensure  => 'latest',
 }

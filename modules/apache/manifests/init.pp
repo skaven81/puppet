@@ -261,7 +261,11 @@ class apache (
         $access_log_file      = 'httpd-access.log'
       }
       default: {
-        fail("Unsupported osfamily ${::osfamily}")
+        $pidfile              = '/var/run/httpd/httpd.pid'
+        $error_log            = 'error_log'
+        $error_documents_path = '/var/www/error'
+        $scriptalias          = '/var/www/cgi-bin'
+        $access_log_file      = 'access_log'
       }
     }
 
