@@ -66,6 +66,26 @@ http_mount { '/var/www/html/www.counterstonecreations.com':
     # AWS volume id vol-1a0b8f02
     uuid => '01ddb84c-0c3b-4408-81fe-37457b83ddc3',
 }
+
+# "MyIP" site
+file { '/var/www/html/myip':
+    ensure  => 'directory',
+    owner   => 'root',
+    group   => 'root',
+    seluser => 'unconfined_u',
+    selrole => 'object_r',
+    seltype => 'httpd_sys_content_t',
+    recurse => 'true',
+} ->
+file { '/var/www/html/myip/index.php':
+    ensure => 'file',
+    owner   => 'root',
+    group   => 'root',
+    seluser => 'unconfined_u',
+    selrole => 'object_r',
+    seltype => 'httpd_sys_content_t',
+    content => template('myip/index.php'),
+}
             
 # Apache configuration
 class { 'apache':
