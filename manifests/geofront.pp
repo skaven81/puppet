@@ -131,6 +131,17 @@ class { '::ntp':
 
 
 # RAID configuration
+file { '/etc/mdadm.conf':
+    ensure  => 'file',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '444',
+    content => "MAILADDR paul.krizak@gmail.com
+#AUTO +imsm +1.x -all
+ARRAY /dev/md127 devices=/dev/sd[bcd]
+"
+}
+
 mount { '/raid':
     device => "/dev/mapper/vg_raid-lv_raid",
     ensure => "mounted",
