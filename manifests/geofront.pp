@@ -71,6 +71,22 @@ done
 ',
 }
 
+# ddclient configuration
+file { '/etc/ddclient/ddclient.conf':
+    ensure  => 'file',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0400',
+    content => template("ddclient/ddclient.conf"),
+}
+file { '/usr/sbin/ddclient':
+    ensure  => 'file',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0555',
+    content => template("ddclient/ddclient"),
+}
+
 # Mail relay configuration
 class { '::postfix::server':
     extra_main_parameters => {
