@@ -136,7 +136,7 @@ mount { '/raid':
     ensure => "mounted",
     atboot => true,
     fstype => 'ext3',
-    options => 'defaults',
+    options => 'noatime',
     pass    => 2,
     dump    => 1,
 } ->
