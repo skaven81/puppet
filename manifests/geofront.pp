@@ -246,7 +246,7 @@ file { "/etc/cron.d/raid-email":
     group   => 'root',
     mode    => '400',
     content => "# E-mail sysadmin if RAID has gone off in the weeds
-0 1 * * Sat root /bin/bash -c 'grep -q \"blocks super.*_\" /proc/mdstat && mail -s \"RAID on geofront is wonky\" paul.krizak@gmail.com < /proc/mdstat'
+0 1 * * * root /bin/bash -c 'grep -q \"blocks super.*_\" /proc/mdstat && mail -s \"RAID on geofront is wonky\" paul.krizak@gmail.com < /proc/mdstat'
 "
 }
 
