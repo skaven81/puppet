@@ -62,11 +62,6 @@ define http_mount (
     }
 }
 
-http_mount { '/var/www/html/www.rainbowlakeestate.net':
-    # AWS volume id vol-ff6ce8e7
-    uuid => 'b06d95ee-9ca7-4cc1-a79b-1cb26f4f9c09', 
-    ensure => 'absent',
-}
 http_mount { '/var/www/html/www.counterstonecreations.com':
     # AWS volume id vol-1a0b8f02
     uuid => '01ddb84c-0c3b-4408-81fe-37457b83ddc3',
