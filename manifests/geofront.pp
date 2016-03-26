@@ -229,6 +229,15 @@ file { "/etc/cron.d/raid-check":
 0 1 * * Sun root /usr/sbin/raid-check
 "
 }
+file { "/etc/cron.d/raid-email":
+    ensure  => 'file',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '400',
+    content => "# E-mail sysadmin if RAID has gone off in the weeds
+0 1 * * Sat root /bin/bash -c 'grep -q \"blocks super.*_\" /proc/mdstat && mail -s \"RAID on geofront is wonky\" paul.krizak@gmail.com < /proc/mdstat'
+"
+}
 
 # SSH configuration
 sshd_config { "ListenAddress":
