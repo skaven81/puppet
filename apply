@@ -15,7 +15,7 @@ fi
 hn=$1
 shift
 
-if [ `hostname -s` != $hn ]; then
+if [ $hn != balthasar ] && [ `hostname -s` != $hn ]; then
     echo "It doesn't look like you're on $hn..."
     echo -n "Are you sure? "
     read yn
