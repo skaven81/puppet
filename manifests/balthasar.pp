@@ -41,7 +41,7 @@ package { [ 'puppet' ]:
 cron { 'puppet-git':
     ensure  => 'present',
     user    => 'root',
-    command => '/bin/bash -c "cd /opt/puppet; git pull >/dev/null 2>/dev/null"',
+    command => '/bin/bash -c "cd /opt/puppet; /usr/bin/git pull >/dev/null 2>/dev/null"',
     minute  => 0,
     hour    => 12,
 }
