@@ -38,6 +38,14 @@ package { [ 'puppet' ]:
     ensure  => 'latest',
 }
 
+cron { 'puppet':
+    ensure  => 'present',
+    user    => 'root',
+    command => '/usr/bin/puppet apply --modulepath=/opt/puppet/modules /opt/puppet/manifests/geofront.pp  | grep -v "Finished catalog run"',
+    minute  => 0,
+    hour    => 12,
+}
+
 # Extra volumes
 define http_mount (
     $path = $title,
