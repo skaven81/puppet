@@ -38,11 +38,19 @@ package { [ 'puppet' ]:
     ensure  => 'latest',
 }
 
+cron { 'puppet-git':
+    ensure  => 'present',
+    user    => 'root',
+    command => '/bin/bash -c "cd /opt/puppet; git pull >/dev/null 2>/dev/null"'
+    minute  => 0,
+    hour    => 12,
+}
+
 cron { 'puppet':
     ensure  => 'present',
     user    => 'root',
     command => '/usr/bin/puppet apply --modulepath=/opt/puppet/modules /opt/puppet/manifests/balthasar.pp  | grep -v "Finished catalog run"',
-    minute  => 0,
+    minute  => 5,
     hour    => 12,
 }
 
