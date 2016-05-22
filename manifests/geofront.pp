@@ -305,6 +305,9 @@ class { 'nsswitch':
     group  => 'files',
 }
 
+# Make sure we have plenty of inotify handles
+sysctl { 'fs.inotify.max_user_watches': value => '1048576' }
+
 # Docker configuration
 package { 'docker-io':
     ensure => 'installed',
