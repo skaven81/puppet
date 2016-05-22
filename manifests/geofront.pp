@@ -253,9 +253,17 @@ file { "/etc/cron.d/raid-check":
     group   => 'root',
     mode    => '400',
     content => "# Run system wide raid-check once a week on Sunday at 1am by default
-# Remounting /sys read-write is due to this bug: https://github.com/docker/docker/issues/7101
-# with docker.  When /sys goes read-only, raid-check can't function anymore.
-0 1 * * Sun root mount -o remount,rw /sys && /usr/sbin/raid-check
+0 1 * * Sun root /usr/sbin/raid-check
+"
+}
+file { "/etc/cron.d/sys-rw":
+    ensure  => 'file',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '400',
+    content => "# Remounting /sys read-write is due to this bug: https://github.com/docker/docker/issues/7101
+# with docker.  When /sys goes read-only, mdadm goes haywire
+*/10 * * * * root mount -o remount,rw /sys
 "
 }
 file { "/etc/cron.d/raid-email":
