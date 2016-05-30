@@ -3,6 +3,12 @@
 
 include ::pubkeys
 
+# Newer Puppet has a warning if you don't explicitly
+# set a default for allow_virtual
+Package {
+    allow_virtual => true
+}
+
 account {'root':
     ensure  => 'present',
     uid     => 0,
@@ -30,7 +36,7 @@ account {'skaven':
     home_dir    => '/home/skaven',
     manage_home => false,
     create_group => false,
-    groups      => [ 'users', 'skaven', 'wheel', 'kvm', 'dockerroot' ],
+    groups      => [ 'users', 'skaven', 'wheel', 'docker' ],
 }
 account {'lori':
     ensure      => 'present',
@@ -71,20 +77,43 @@ done
 ',
 }
 
+# cups configuration
+package { 'cups':
+    ensure  => 'installed',
+} ->
+file { '/etc/cupsd.conf':
+    ensure  => 'present',
+    owner   => 'root',
+    group   => 'lp',
+    mode    => '0640',
+    content => template("cups/cupsd.conf"),
+
+} ->
+service { 'cups':
+    ensure  => 'running',
+    enable  => true,
+}
+
 # ddclient configuration
+package { 'ddclient':
+    ensure  => 'installed',
+} ->
+file { '/etc/ddclient':
+    ensure  => 'directory',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0755',
+} ->
 file { '/etc/ddclient/ddclient.conf':
     ensure  => 'file',
     owner   => 'root',
     group   => 'root',
     mode    => '0400',
     content => template("ddclient/ddclient.conf"),
-}
-file { '/usr/sbin/ddclient':
-    ensure  => 'file',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0555',
-    content => template("ddclient/ddclient"),
+} ->
+service { 'ddclient':
+    ensure  => 'running',
+    enable  => 'true',
 }
 
 # Mail relay configuration
@@ -319,7 +348,7 @@ class { 'nsswitch':
 sysctl { 'fs.inotify.max_user_watches': value => '1048576' }
 
 # Docker configuration
-package { 'docker-io':
+package { 'docker-engine':
     ensure => 'installed',
 } ->
 service { 'docker':
@@ -328,5 +357,5 @@ service { 'docker':
 } ->
 file { '/var/run/docker.sock':
     owner => 'root',
-    group => 'dockerroot',
+    group => 'docker',
 }
