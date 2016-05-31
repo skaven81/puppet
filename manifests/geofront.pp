@@ -346,6 +346,7 @@ class { 'nsswitch':
 
 # Make sure we have plenty of inotify handles
 sysctl { 'fs.inotify.max_user_watches': value => '1048576' }
+sysctl { 'net.ipv4.ip_forward': value => '1' }
 
 # Docker configuration
 package { 'docker-engine':
