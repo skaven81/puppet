@@ -29,7 +29,6 @@ class { '::ntp':
 }
 
 # Hosts file and nsswitch
-include ::geofront::hosts
 class { 'nsswitch':
     hosts => ['files', 'dns'],
 }
