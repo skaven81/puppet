@@ -336,7 +336,6 @@ service { "sshd":
 }
 
 # Hosts file and nsswitch
-include ::geofront::hosts
 class { 'nsswitch':
     hosts => ['files', 'dns'],
     passwd => 'files',
