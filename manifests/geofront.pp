@@ -56,7 +56,7 @@ package { [ 'puppet' ]:
 cron { 'puppet':
     ensure  => 'present',
     user    => 'root',
-    command => '/usr/bin/puppet apply --modulepath=/raid/puppet/modules /raid/puppet/manifests/geofront.pp  | grep -v "Finished catalog run"',
+    command => '/usr/bin/puppet apply --modulepath=/raid/puppet/modules /raid/puppet/manifests/geofront.pp 2>&1 | grep -v "Finished catalog run" | grep -v "Compiled catalog" | grep -v "hiera.yaml"',
     minute  => 0,
     hour    => 12,
 }
