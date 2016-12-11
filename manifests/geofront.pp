@@ -98,11 +98,17 @@ service { 'cups':
 package { 'ddclient':
     ensure  => 'installed',
 } ->
+file { '/var/run/ddclient':
+    ensure  => 'directory',
+    owner   => 'ddclient',
+    group   => 'ddclient',
+    mode    => '770',
+} ->
 file { '/etc/ddclient.conf':
     ensure  => 'file',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0400',
+    owner   => 'ddclient',
+    group   => 'ddclient',
+    mode    => '0600',
     content => template("ddclient/ddclient.conf"),
 } ->
 service { 'ddclient':
