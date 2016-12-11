@@ -18,7 +18,7 @@ cron { 'puppet':
 # Mail relay
 class { '::ssmtp':
     rootEmail => 'paul.krizak@gmail.com',
-    mailHub => '192.168.1.50',
+    mailHub => '192.168.86.50',
 } ->
 package { 'postfix':
     ensure => 'absent',

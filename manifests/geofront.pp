@@ -119,7 +119,7 @@ service { 'ddclient':
 # Mail relay configuration
 # NOTE: geofront's FQDN needs to be listed first in /etc/hosts next to
 # its IP address:
-#   192.168.1.50    geofront.dyndns.info geofront geofront.spectrum.local
+#   192.168.86.50    geofront.dyndns.info geofront geofront.spectrum.local
 # If the short name is listed first, `hostname -f` doesn't return a full
 # hostname, and postfix gets very confused about which domains should relay mail.
 class { '::postfix::server':
@@ -130,7 +130,7 @@ class { '::postfix::server':
         smtp_sasl_security_options => 'noanonymous',
         smtp_tls_CAfile => '/etc/postfix/cacert.pem',
         mynetworks_style => 'subnet',
-        mynetworks => '192.168.1.0/24, 127.0.0.1/8',
+        mynetworks => '192.168.86.0/24, 127.0.0.1/8',
         relayhost => '[smtp.gmail.com]:587',
         },
     inet_interfaces => 'localhost',
@@ -313,7 +313,7 @@ file { "/etc/cron.d/raid-email":
 # SSH configuration
 sshd_config { "ListenAddress":
     ensure => present,
-    value  => "192.168.1.50",
+    value  => "192.168.86.50",
     notify => Service['sshd'],
 }
 sshd_config { "PermitRootLogin":

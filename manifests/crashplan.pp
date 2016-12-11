@@ -70,8 +70,6 @@ mount { '/geofront-root/usr/share/ipkungfu':
     pass    => '0',
 }
 
-include ::geofront::hosts
-
 class { '::ntp':
     ignore_local_clock => true,
 }
@@ -86,7 +84,7 @@ cron { 'puppet':
 
 class { '::ssmtp':
     rootEmail => 'paul.krizak@gmail.com',
-    mailHub => '192.168.1.50',
+    mailHub => '192.168.86.50',
 } ->
 package { 'postfix':
     ensure => 'absent',

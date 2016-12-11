@@ -1,5 +1,5 @@
 class geofront::mail_client (
-    $relayhost = '192.168.1.50',
+    $relayhost = '192.168.86.50',
     $root_dest = 'root',
 ) {
     class {'::postfix::server':
