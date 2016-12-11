@@ -81,7 +81,7 @@ done
 package { 'cups':
     ensure  => 'installed',
 } ->
-file { '/etc/cupsd.conf':
+file { '/etc/cups/cupsd.conf':
     ensure  => 'present',
     owner   => 'root',
     group   => 'lp',
@@ -98,13 +98,7 @@ service { 'cups':
 package { 'ddclient':
     ensure  => 'installed',
 } ->
-file { '/etc/ddclient':
-    ensure  => 'directory',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0755',
-} ->
-file { '/etc/ddclient/ddclient.conf':
+file { '/etc/ddclient.conf':
     ensure  => 'file',
     owner   => 'root',
     group   => 'root',
