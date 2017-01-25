@@ -87,7 +87,7 @@ file { '/etc/cups/cupsd.conf':
     group   => 'lp',
     mode    => '0640',
     content => template("cups/cupsd.conf"),
-
+    notify  => Service['cups'],
 } ->
 service { 'cups':
     ensure  => 'running',
@@ -110,6 +110,7 @@ file { '/etc/ddclient.conf':
     group   => 'ddclient',
     mode    => '0600',
     content => template("ddclient/ddclient.conf"),
+    notify  => Service['ddclient'],
 } ->
 service { 'ddclient':
     ensure  => 'running',
