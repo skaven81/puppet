@@ -121,7 +121,7 @@ protocol=dyndns2
 server=dynupdate.no-ip.com
 login=skaven04
 password=21nWJTY0KLjcDLDz
-geofront.hopto.org
+geofront.viewdns.net
 ",
     notify  => Service['ddclient'],
 } ->
