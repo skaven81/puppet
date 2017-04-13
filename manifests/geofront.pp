@@ -109,7 +109,20 @@ file { '/etc/ddclient.conf':
     owner   => 'ddclient',
     group   => 'ddclient',
     mode    => '0600',
-    content => template("ddclient/ddclient.conf"),
+    content => "
+daemon=300
+syslog=yes
+mail=paul.krizak@gmail.com
+mail-failure=paul.krizak@gmail.com
+pid=/var/run/ddclient/ddclient.pid
+ssl=yes
+use=web, web=checkip.dyndns.com/, web-skip='IP Address'
+protocol=dyndns2
+server=dynupdate.no-ip.com
+login=skaven04
+password=21nWJTY0KLjcDLDz
+geofront.hopto.org
+",
     notify  => Service['ddclient'],
 } ->
 service { 'ddclient':

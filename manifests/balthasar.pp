@@ -54,6 +54,43 @@ cron { 'puppet':
     hour    => 12,
 }
 
+# Dynamic DNS
+package { 'ddclient':
+    ensure  => 'installed',
+} ->
+file { '/var/run/ddclient':
+    ensure  => 'directory',
+    owner   => 'ddclient',
+    group   => 'ddclient',
+    mode    => '770',
+} ->
+file { '/etc/ddclient.conf':
+    ensure  => 'file',
+    owner   => 'ddclient',
+    group   => 'ddclient',
+    mode    => '0600',
+    content => "
+daemon=300
+syslog=yes
+mail=paul.krizak@gmail.com
+mail-failure=paul.krizak@gmail.com
+pid=/var/run/ddclient/ddclient.pid
+ssl=yes
+use=web, web=checkip.dyndns.com/, web-skip='IP Address'
+protocol=dyndns2
+server=dynupdate.no-ip.com
+login=skaven04
+password=21nWJTY0KLjcDLDz
+balthasar.viewdns.net
+",
+    notify  => Service['ddclient'],
+} ->
+service { 'ddclient':
+    ensure  => 'running',
+    enable  => 'true',
+}
+
+
 # Extra volumes
 define http_mount (
     $path = $title,
