@@ -133,7 +133,7 @@ service { 'ddclient':
 # Mail relay configuration
 # NOTE: geofront's FQDN needs to be listed first in /etc/hosts next to
 # its IP address:
-#   192.168.86.50    geofront.dyndns.info geofront geofront.spectrum.local
+#   192.168.86.50    geofront.viewdns.net geofront geofront.spectrum.local
 # If the short name is listed first, `hostname -f` doesn't return a full
 # hostname, and postfix gets very confused about which domains should relay mail.
 class { '::postfix::server':
