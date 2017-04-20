@@ -202,7 +202,7 @@ file { '/etc/mdadm.conf':
     mode    => '444',
     content => "MAILADDR paul.krizak@gmail.com
 #AUTO +imsm +1.x -all
-ARRAY /dev/md127 devices=/dev/sd[bcd]
+ARRAY /dev/md127 devices=/dev/sd[bcde]
 "
 }
 
