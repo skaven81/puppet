@@ -54,42 +54,32 @@ cron { 'puppet':
     hour    => 12,
 }
 
-# Dynamic DNS
-package { 'ddclient':
-    ensure  => 'installed',
-} ->
-file { '/var/run/ddclient':
-    ensure  => 'directory',
-    owner   => 'ddclient',
-    group   => 'ddclient',
-    mode    => '770',
-} ->
-file { '/etc/ddclient.conf':
-    ensure  => 'file',
-    owner   => 'ddclient',
-    group   => 'ddclient',
-    mode    => '0600',
-    content => "
-daemon=300
-syslog=yes
-mail=paul.krizak@gmail.com
-mail-failure=paul.krizak@gmail.com
-pid=/var/run/ddclient/ddclient.pid
-ssl=yes
-use=web, web=169.254.169.254/latest/meta-data/public-ipv4
-protocol=dyndns2
-server=dynupdate.no-ip.com
-login=skaven04
-password=21nWJTY0KLjcDLDz
-balthasar.viewdns.net
-",
-    notify  => Service['ddclient'],
-} ->
+# Dynamic DNS (no longer in use)
 service { 'ddclient':
-    ensure  => 'running',
-    enable  => 'true',
+    ensure  => 'stopped',
+    enable  => 'false',
 }
-
+# NoIP dynamic update client
+file { '/usr/sbin/noip2':
+    mode => '0555',
+    owner => 'root',
+    group => 'root',
+    source => 'puppet:///modules/noip/noip2-x86_64',
+} ->
+file { '/etc/noip.cfg':
+    mode => '0444',
+    owner => 'root',
+    group => 'root',
+    source => '/etc/noip-master.cfg',
+} ~>
+service { 'noip2':
+    ensure => 'running',
+    binary => '/usr/sbin/noip2',
+    hasrestart => 'false',
+    hasstatus => 'false',
+    provider => 'base',
+    start => '/usr/sbin/noip2 -c /etc/noip.cfg',
+}
 
 # Extra volumes
 define http_mount (

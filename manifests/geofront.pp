@@ -94,40 +94,31 @@ service { 'cups':
     enable  => true,
 }
 
-# ddclient configuration
-package { 'ddclient':
-    ensure  => 'installed',
-} ->
-file { '/var/run/ddclient':
-    ensure  => 'directory',
-    owner   => 'ddclient',
-    group   => 'ddclient',
-    mode    => '770',
-} ->
-file { '/etc/ddclient.conf':
-    ensure  => 'file',
-    owner   => 'ddclient',
-    group   => 'ddclient',
-    mode    => '0600',
-    content => "
-daemon=300
-syslog=yes
-mail=paul.krizak@gmail.com
-mail-failure=paul.krizak@gmail.com
-pid=/var/run/ddclient/ddclient.pid
-ssl=yes
-use=web, web=balthasar.viewdns.net/myip/, web-skip='IP Address: '
-protocol=dyndns2
-server=dynupdate.no-ip.com
-login=skaven04
-password=21nWJTY0KLjcDLDz
-geofront.viewdns.net
-",
-    notify  => Service['ddclient'],
-} ->
+# ddclient configuration (no longer used)
 service { 'ddclient':
-    ensure  => 'running',
-    enable  => 'true',
+    ensure  => 'stopped',
+    enable  => 'false',
+}
+# NoIP dynamic update client
+file { '/usr/sbin/noip2':
+    mode => '0555',
+    owner => 'root',
+    group => 'root',
+    source => 'puppet:///modules/noip/noip2-x86_64',
+} ->
+file { '/etc/noip.cfg':
+    mode => '0444',
+    owner => 'root',
+    group => 'root',
+    source => '/etc/noip-master.cfg',
+} ~>
+service { 'noip2':
+    ensure => 'running',
+    binary => '/usr/sbin/noip2',
+    hasrestart => 'false',
+    hasstatus => 'false',
+    provider => 'base',
+    start => '/usr/sbin/noip2 -c /etc/noip.cfg',
 }
 
 # Mail relay configuration
