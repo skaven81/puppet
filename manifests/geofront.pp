@@ -106,6 +106,7 @@ file { '/usr/sbin/noip2':
     group => 'root',
     source => 'puppet:///modules/noip/noip2-x86_64',
 } ->
+# To generate noip-master.cfg, run `noip2 -C -c /etc/noip-master.cfg`
 file { '/etc/noip.cfg':
     mode => '0444',
     owner => 'root',
