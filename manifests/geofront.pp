@@ -47,6 +47,15 @@ account {'lori':
     create_group => false,
     groups      => [ 'users', 'lori' ],
 }
+account {'winbackup':
+    ensure      => 'present',
+    uid         => 2000,
+    shell       => '/bin/bash',
+    home_dir    => '/raid/windows-backups',
+    manage_home => false,
+    create_group => false,
+    groups      => [ ],
+}
 
 # Packages
 package { [ 'puppet' ]:
