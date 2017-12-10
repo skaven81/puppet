@@ -54,6 +54,29 @@ cron { 'puppet':
     hour    => 12,
 }
 
+# Ensure LetsEncrypt certificate gets renewed
+# automatically.  The certs live in /etc/letsencrypt
+# and the certbot-auto utility can be used to build
+# new certificates if needed.
+wget::fetch { 'https://dl.eff.org/certbot-auto',
+    destination => '/usr/bin/',
+    timeout     => 30,
+    verbose     => false,
+} ->
+file { '/usr/bin/certbot-auto',
+    ensure  => 'present',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0555',
+} ->
+cron { 'letsencrypt-renew':
+    ensure  => 'present',
+    user    => 'root',
+    command => '/usr/bin/certbot-auto renew',
+    minute  => '10',
+    hour    => '4,16',
+}
+
 # Dynamic DNS (no longer in use)
 service { 'ddclient':
     ensure  => 'stopped',
