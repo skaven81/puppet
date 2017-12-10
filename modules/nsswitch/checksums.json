@@ -1,12 +1,12 @@
 {
-  "Gemfile": "c505f86dc9676bc325cde32b4ff701e9",
+  "Gemfile": "f189dbd625ca1dc09228e7d375a300b2",
   "LICENSE": "ab6706efcf904fda4596648d8fafa387",
-  "README.md": "803d91a3177bfa86321a7eb7b106a2ba",
+  "README.md": "ed5f50190b4a5bcc935ed213e459b1f2",
   "Rakefile": "0254db5d3fc38c67a2c160d7296a24f8",
-  "manifests/init.pp": "c674ef54d6c7e6cabedd83df7137630a",
-  "manifests/params.pp": "a4e7c960791b9c09123dd5106565037e",
-  "metadata.json": "02ea687c6520f6c1e59d04f86f4d335e",
-  "spec/classes/nsswitch_spec.rb": "23ca216dcbd3512b4bcc6e456fb8799f",
+  "manifests/init.pp": "6f344a23fd7c7f044452696ac239e19d",
+  "manifests/params.pp": "f3d4c25f1325aef68ad8caeec9fd29bf",
+  "metadata.json": "4d9188cafec7df3c17bd8078e9fb2d1c",
+  "spec/classes/nsswitch_spec.rb": "f1a0a3248fc01f224f89850222519b22",
   "spec/spec_helper.rb": "0db89c9a486df193c0e40095422e19dc",
-  "templates/nsswitch.conf.erb": "aa12d2fcd095f88a8ea77954c4b4a452"
+  "templates/nsswitch.conf.epp": "472a98b6b24f553702396bd8ec0b1ea1"
 }

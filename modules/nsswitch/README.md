@@ -5,10 +5,17 @@ A way of expressing nsswitch.conf configurations declaratively. This
 should manage the standard 15 databases NSS supports, plus the `sudo` entry
 respected by sudo since the 1.7.0 release.
 
+### Updated for Puppet 4 - No Puppet 3 Compatibility
+
+The 2.x series of this module officially adopts the Puppet 4 parser syntax and
+other new Puppet features. The 2.x series will no longer work with Puppet 3 or
+earlier. One benefit is the removal of dependency the `trlinkin-validate_multi`
+module.
+
 ### Defaults
 
 Currently this module has support for EL based Linux distributions,
-Fedora, Ubuntu, and Gentoo. This module by default will create a basic
+Fedora, Debian/Ubuntu, and Gentoo. This module by default will create a basic
 nsswitch.conf that uses defaults derived from what the distribution uses in
 the nsswitch.conf file on fresh install. These defaults have been verified
 on the mentioned distributions by the kindness and diligence of
@@ -19,19 +26,21 @@ This module should be capable of supporting the following systems:
  * Debian/Ubuntu
  * RHEL (Centos, RHEL6.x, Amazon)
  * Fedora
- * Oracle Linux 6.x
+ * Oracle Linux 5.x, 6.x
  * Gentoo
 
 Testing has only confirmed functionality on the following:
   * Ubuntu 12.4
   * Fedora 19
+  * Centos 6/7
+  * RHEL 6/7
 
 ### Usage
 
 #### nsswitch class
 
 This is the class by which you will manage the nsswitch.conf file. There
-is one paramter per standard database NSS supports. The class accepts both strings 
+is one paramter per standard database NSS supports. The class accepts both strings
 and arrays as paramters. The benefit being, you could possibly merge an array
 of options with hiera. When using an array, each element should be the
 lookup service followed by the reaction statement.
@@ -75,7 +84,7 @@ class { 'nsswitch':
   hosts  => ['dns [!UNAVAIL=return]','files'],
 }
 ```
-    
+
 #### Example nsswitch.conf with all defaults for RHEL systems
 
     # This file is controlled by Puppet
@@ -97,7 +106,47 @@ class { 'nsswitch':
     aliases:    files nisplus
 
 ### Changelog
-
+* Bump Version to 2.0.0 and amend change log
+* Update README with Puppet 4 compatibility message
+* Simplify the TravisCI matrix
+* Add default for "sudoers" database to Solaris
+* Add default shadow value of "undef" for Solaris
+* Correct typo in unit tests
+* Use $facts for all fact access
+* Update travis configuration
+* Remove dependencies from metadata.json
+* Ensure puppet-lint used is 2.0.0 or higher
+* Update metadata CI job
+* Update automated testing for Puppet 4 features
+* Use Puppet 4 style facts
+* Move from ERB to EPP templates
+* Update TravisCI to test only Puppet 4+
+* Merge branch 'puppet4' into 2.x.x
+* Add support for CloudLinux distributions
+* Bump version to 1.2.0 and update changelog
+* Change quoting of string in `params.pp`
+* Correct `.travis.yml` tests
+* Add unit tests for different EL versions
+* Cleanup metadata tabbing and add EL 7 version
+* Add Puppet/PE requirements to metadata.json
+* Add explicit support for EL 7
+* Change tabbing in params.pp
+* Remove undesirable tags from metadata
+* Merge pull request #15 from togge/master
+* added support for gshadow
+* Update Changelog and bump version to 1.1.0
+* Extend Travis-CI testing
+* Updates to the README.md
+* Fixup the travis-ci configuration
+* Removing Gemfile.lock - I was wrong
+* Update spec tests to use Rspec 3.x syntax
+* Refactor unit tests for changes in Rspec/Rspec-Puppet
+* Add changes to Gemfile and add a Gemfile.lock
+* Remove Gemfile.lock from the .gitignore
+* Fix fact name in spec tests
+* Add fixtures to .gitignore
+* add OEL supprt
+* making changes to pass lint
 * Bump version to 1.0.0
 * Adding license file
 * Further clean up metadata.json
