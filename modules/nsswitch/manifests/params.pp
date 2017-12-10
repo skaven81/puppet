@@ -22,9 +22,9 @@
 #
 class nsswitch::params {
 
-  case $facts['operatingsystem'] {
-    /CentOS|RedHat|Amazon|OEL|OracleLinux|Scientific|CloudLinux/: {
-      if $facts[operatingsystemmajrelease] == '7' {
+  case $::operatingsystem {
+    /CentOS|RedHat|Amazon|OEL|OracleLinux|Scientific/: {
+      if $::operatingsystemmajrelease == '7' {
         $passwd_default     = ['files','sss']
         $shadow_default     = ['files','sss']
         $group_default      = ['files','sss']
@@ -116,7 +116,7 @@ class nsswitch::params {
     'Solaris': {
       $passwd_default       = ['files','nisplus']
       $group_default        = ['files','nisplus']
-      $gshadow_default      = undef
+      $gshadow_default    = undef
       $hosts_default        = ['files','dns','nisplus']
       $services_default     = ['nisplus','files']
       $networks_default     = ['nisplus','files']
@@ -129,8 +129,6 @@ class nsswitch::params {
       $netgroup_default     = ['nisplus']
       $automount_default    = ['files','nisplus']
       $aliases_default      = ['files','nisplus']
-      $shadow_default       = undef
-      $sudoers_default      = undef
     }
     'Gentoo': {
       $aliases_default    = ['files']
@@ -152,7 +150,7 @@ class nsswitch::params {
       $sudoers_default    = undef
     }
     default: {
-      fail("${facts['operatingsystem']} is not a supported operating system.")
+      fail("${::operatingsystem} is not a supported operating system.")
     }
   }
 }
