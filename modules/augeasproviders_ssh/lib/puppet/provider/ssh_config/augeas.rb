@@ -1,9 +1,11 @@
+# coding: utf-8
 # Alternative Augeas-based providers for Puppet
 #
 # Copyright (c) 2012 Raphaël Pinson
 # Licensed under the Apache License, Version 2.0
 
 
+raise("Missing augeasproviders_core dependency") if Puppet::Type.type(:augeasprovider).nil?
 Puppet::Type.type(:ssh_config).provide(:augeas, :parent => Puppet::Type.type(:augeasprovider).provider(:default)) do
   desc "Uses Augeas API to update an ssh_config parameter"
 
@@ -66,8 +68,10 @@ Puppet::Type.type(:ssh_config).provide(:augeas, :parent => Puppet::Type.type(:au
   end
 
   def self.set_value(aug, base, path, label, value)
-    if label =~ /Ciphers|SendEnv|MACs/i
+    if label =~ /Ciphers|SendEnv|MACs|(HostKey|Kex)Algorithms|GlobalKnownHostsFile/i
       aug.rm("#{path}/*")
+      # In case there is more than one entry, keep only the first one
+      aug.rm("#{path}[position() != 1]")
       count = 0
       value.each do |v|
         count += 1

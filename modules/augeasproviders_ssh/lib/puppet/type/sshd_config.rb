@@ -56,9 +56,31 @@ whitespace.  This is used if the `Match` block has multiple criteria.
 
     condition => 'Host example.net User root'
       "
+
+    munge do |value|
+      if value.is_a? Hash
+        # TODO: test this
+        value
+      else
+        value_a = value.split
+        Hash[*value_a]
+      end
+    end
   end
 
   autorequire(:file) do
     self[:target]
+  end
+
+  autorequire(:sshd_config_match) do
+    if self[:condition]
+      names = []
+      self[:condition].keys.permutation.to_a.each do |p|
+        name = p.map { |k| "#{k} #{self[:condition][k]}" }.join(' ')
+        names << name
+        names << "#{name} in #{self[:target]}"
+      end
+      names
+    end
   end
 end

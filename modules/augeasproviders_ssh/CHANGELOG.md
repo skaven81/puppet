@@ -1,5 +1,37 @@
 # Changelog
 
+## 2.5.3
+
+- ssh_config: fix HostKeyAlgorithms and KexAlgorithms (#GH 36)
+
+## 2.5.2
+
+- Added docker acceptance test
+- Refactor the travis.yml for the current LTS versions of Puppet
+
+## 2.5.1
+
+- Bugfix Release:
+  - Allow multiple values for GlobalKnownHostsFile (#GH 32)
+  - Ensure that AddressFamily comes before ListenAddress (#GH 34)
+
+## 2.5.0
+
+- Implement instances for sshkey (only for non-hashed entries)
+
+## 2.4.0
+
+- Add sshd_config_match type and provider (#GH 5)
+- Purge multiple array entries in ssh_config provider (GH #12)
+
+## 2.3.0
+
+- Add sshkey provider (GH #13)
+- sshd_config: munge condition parameter
+- Improve test setup
+- Get rid of Gemfile.lock
+- Improve README badges
+
 ## 2.2.2
 
 - Properly insert values after commented out entry if case doesn't match (GH #6)

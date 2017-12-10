@@ -1,9 +1,10 @@
+# coding: utf-8
 # Alternative Augeas-based providers for Puppet
 #
 # Copyright (c) 2012 Raphaël Pinson
 # Licensed under the Apache License, Version 2.0
 
-
+raise("Missing augeasproviders_core dependency") if Puppet::Type.type(:augeasprovider).nil?
 Puppet::Type.type(:sshd_config).provide(:augeas, :parent => Puppet::Type.type(:augeasprovider).provider(:default)) do
   desc "Uses Augeas API to update an sshd_config parameter"
 
@@ -119,6 +120,7 @@ Puppet::Type.type(:sshd_config).provide(:augeas, :parent => Puppet::Type.type(:a
       }.uniq.reject {|name| name.start_with?("#", "@")}
 
       settings.each do |name|
+        next if name.downcase == "subsystem"
         value = self.get_value(aug, "$target/#{name}")
         entry = {:ensure => :present, :name => name, :value => value}
         resources << new(entry) if entry[:value]
@@ -139,6 +141,7 @@ Puppet::Type.type(:sshd_config).provide(:augeas, :parent => Puppet::Type.type(:a
         }.uniq.reject {|name| name.start_with?("#", "@")}
 
         settings.each do |name|
+          next if name.downcase == "subsystem"
           value = self.get_value(aug, "#{mpath}/Settings/#{name}")
           entry = {:ensure => :present, :name => name,
                    :value => value, :condition => cond_str}
@@ -151,10 +154,9 @@ Puppet::Type.type(:sshd_config).provide(:augeas, :parent => Puppet::Type.type(:a
 
   def self.match_conditions(resource=nil)
     if resource[:condition]
-      conditions = Hash[*resource[:condition].split(' ').flatten(1)]
-      cond_keys = conditions.keys.length
+      cond_keys = resource[:condition].keys.length
       cond_str = "[count(Condition/*)=#{cond_keys}]"
-      conditions.each { |k,v| cond_str += "[Condition/#{k}=\"#{v}\"]" }
+      resource[:condition].each { |k,v| cond_str += "[Condition/#{k}=\"#{v}\"]" }
       cond_str
     else
       ""
@@ -163,23 +165,31 @@ Puppet::Type.type(:sshd_config).provide(:augeas, :parent => Puppet::Type.type(:a
 
   def self.match_exists?(aug, resource)
     cond_str = resource[:condition] ? self.match_conditions(resource) : ''
-    not aug.match("$target/Match#{cond_str}").empty?
+    !aug.match("$target/Match#{cond_str}").empty?
   end
 
-  def create 
+  def create
     base_path = self.class.base_path(resource)
     augopen! do |aug|
       key = resource[:key] ? resource[:key] : resource[:name]
       if resource[:condition] && !self.class.match_exists?(aug, resource)
         aug.insert("$target/*[last()]", "Match", false)
-        conditions = Hash[*resource[:condition].split(' ').flatten(1)]
-        conditions.each do |k,v|
+        resource[:condition].each do |k,v|
           aug.set("$target/Match[last()]/Condition/#{k}", v)
         end
       end
-      if key.downcase == 'port' and not aug.match("#{base_path}/ListenAddress").empty?
+      if key.downcase == 'port' && !aug.match("#{base_path}/ListenAddress").empty?
         aug.insert("#{base_path}/ListenAddress[1]", key, true)
       end
+
+     if key.downcase == 'listenaddress' && !aug.match("#{base_path}/AddressFamily").empty?
+       aug.insert("#{base_path}/AddressFamily", key, false)
+     end
+
+     if key.downcase == 'addressfamily' && !aug.match("#{base_path}/ListenAddress").empty?
+       aug.insert("#{base_path}/ListenAddress", key, true)
+     end
+
       self.class.set_value(aug, base_path, "#{base_path}/#{key}", key, resource[:value])
     end
   end

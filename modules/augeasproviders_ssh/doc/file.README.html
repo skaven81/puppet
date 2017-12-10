@@ -1,12 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII" />
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
   File: README
   
-    &mdash; Documentation by YARD 0.8.7.6
+    &mdash; Documentation by YARD 0.9.9
   
 </title>
 
@@ -15,9 +15,8 @@
   <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
 
 <script type="text/javascript" charset="utf-8">
-  hasFrames = window.top.frames.main ? true : false;
+  pathId = "README";
   relpath = '';
-  framesUrl = "frames.html#!file.README.html";
 </script>
 
 
@@ -28,42 +27,42 @@
 
   </head>
   <body>
-    <div id="header">
-      <div id="menu">
+    <div class="nav_wrap">
+      <iframe id="nav" src="file_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
   
     <a href="_index.html">Index</a> &raquo; 
     <span class="title">File: README</span>
   
-
-  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
 </div>
 
-      <div id="search">
+        <div id="search">
   
     <a class="full_list_link" id="class_list_link"
         href="class_list.html">
-      Class List
-    </a>
-  
-    <a class="full_list_link" id="method_list_link"
-        href="method_list.html">
-      Method List
-    </a>
-  
-    <a class="full_list_link" id="file_list_link"
-        href="file_list.html">
-      File List
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
     </a>
   
 </div>
-      <div class="clear"></div>
-    </div>
+        <div class="clear"></div>
+      </div>
 
-    <iframe id="search_frame"></iframe>
-
-    <div id="content"><div id='filecontents'><p><a href="https://forge.puppetlabs.com/herculesteam/augeasproviders_ssh"><img src="http://img.shields.io/puppetforge/v/herculesteam/augeasproviders_ssh.svg" alt="Puppet Forge"></a>
-<a href="https://travis-ci.org/hercules-team/augeasproviders_ssh"><img src="https://travis-ci.org/hercules-team/augeasproviders_ssh.svg?branch=master" alt="Build Status"></a>
-<a href="https://coveralls.io/r/hercules-team/augeasproviders_ssh"><img src="https://img.shields.io/coveralls/hercules-team/augeasproviders_ssh.svg" alt="Coverage Status"></a></p>
+      <div id="content"><div id='filecontents'><p><a href="https://forge.puppetlabs.com/herculesteam/augeasproviders_ssh"><img src="http://img.shields.io/puppetforge/v/herculesteam/augeasproviders_ssh.svg" alt="Puppet Forge Version"></a>
+<a href="https://forge.puppetlabs.com/herculesteam/augeasproviders_ssh"><img src="http://img.shields.io/puppetforge/dt/herculesteam/augeasproviders_ssh.svg" alt="Puppet Forge Downloads"></a>
+<a href="https://forge.puppetlabs.com/herculesteam/augeasproviders_ssh"><img src="https://img.shields.io/puppetforge/e/herculesteam/augeasproviders_ssh.svg" alt="Puppet Forge Endorsement"></a>
+<a href="https://travis-ci.org/hercules-team/augeasproviders_ssh"><img src="https://img.shields.io/travis/hercules-team/augeasproviders_ssh/master.svg" alt="Build Status"></a>
+<a href="https://coveralls.io/r/hercules-team/augeasproviders_ssh"><img src="https://img.shields.io/coveralls/hercules-team/augeasproviders_ssh.svg" alt="Coverage Status"></a>
+<a href="https://gemnasium.com/hercules-team/augeasproviders_ssh"><img src="https://img.shields.io/gemnasium/hercules-team/augeasproviders_ssh.svg" alt="Gemnasium"></a></p>
 
 <h1>ssh: type/provider for ssh files for Puppet</h1>
 
@@ -155,7 +154,21 @@ loads them.</p>
 <td align="center"><strong>yes</strong></td>
 </tr>
 <tr>
+<td align="left">sshd_config_match</td>
+<td align="center"><strong>yes</strong></td>
+<td align="center"><strong>yes</strong></td>
+<td align="center"><strong>yes</strong></td>
+<td align="center"><strong>yes</strong></td>
+</tr>
+<tr>
 <td align="left">sshd_config_subsystem</td>
+<td align="center"><strong>yes</strong></td>
+<td align="center"><strong>yes</strong></td>
+<td align="center"><strong>yes</strong></td>
+<td align="center"><strong>yes</strong></td>
+</tr>
+<tr>
+<td align="left">sshkey</td>
 <td align="center"><strong>yes</strong></td>
 <td align="center"><strong>yes</strong></td>
 <td align="center"><strong>yes</strong></td>
@@ -309,6 +322,43 @@ sshd_config { &quot;AllowAgentForwarding&quot;:
 }
 </code></pre>
 
+<h3>sshd_config_match provider</h3>
+
+<h4>manage entry</h4>
+
+<pre class="code ruby"><code class="ruby">sshd_config_match { &quot;Host *.example.net&quot;:
+  ensure =&gt; present,
+}
+</code></pre>
+
+<h4>manage entry with position</h4>
+
+<pre class="code ruby"><code class="ruby">sshd_config_match { &quot;Host *.example.net&quot;:
+  ensure   =&gt; present,
+  position =&gt; &quot;before first match&quot;,
+}
+
+sshd_config_match { &quot;User foo&quot;:
+  ensure   =&gt; present,
+  position =&gt; &quot;after Host *.example.net&quot;,
+}
+</code></pre>
+
+<h4>delete entry</h4>
+
+<pre class="code ruby"><code class="ruby">sshd_config_match { &quot;User foo Host *.example.net&quot;:
+  ensure =&gt; absent,
+}
+</code></pre>
+
+<h4>manage entry in another sshd_config location</h4>
+
+<pre class="code ruby"><code class="ruby">sshd_config_match { &quot;Host *.example.net&quot;:
+  ensure =&gt; present,
+  target =&gt; &quot;/etc/ssh/another_sshd_config&quot;,
+}
+</code></pre>
+
 <h3>sshd_config_subsystem provider</h3>
 
 <h4>manage entry</h4>
@@ -335,16 +385,75 @@ sshd_config { &quot;AllowAgentForwarding&quot;:
 }
 </code></pre>
 
+<h3>sshkey provider</h3>
+
+<h4>manage entry</h4>
+
+<pre class="code ruby"><code class="ruby">sshkey { &quot;foo.example.com&quot;:
+  ensure  =&gt; present,
+  type    =&gt; &quot;ssh-rsa&quot;,
+  key     =&gt; &quot;AAADEADMEAT&quot;,
+}
+</code></pre>
+
+<h4>manage entry with aliases</h4>
+
+<pre class="code ruby"><code class="ruby">sshkey { &quot;foo.example.com&quot;:
+  ensure       =&gt; present,
+  type         =&gt; &quot;ssh-rsa&quot;,
+  key          =&gt; &quot;AAADEADMEAT&quot;,
+  host_aliases =&gt; [ &#39;foo&#39;, &#39;192.168.0.1&#39; ],
+}
+</code></pre>
+
+<h4>manage hashed entry</h4>
+
+<pre class="code ruby"><code class="ruby">sshkey { &quot;foo.example.com&quot;:
+  ensure        =&gt; present,
+  type          =&gt; &quot;ssh-rsa&quot;,
+  key           =&gt; &quot;AAADEADMEAT&quot;,
+  hash_hostname =&gt; true,
+}
+</code></pre>
+
+<h4>hash existing entry</h4>
+
+<pre class="code ruby"><code class="ruby">sshkey { &quot;foo.example.com&quot;:
+  ensure        =&gt; hashed,
+  type          =&gt; &quot;ssh-rsa&quot;,
+  key           =&gt; &quot;AAADEADMEAT&quot;,
+  hash_hostname =&gt; true,
+}
+</code></pre>
+
+<h4>delete entry</h4>
+
+<pre class="code ruby"><code class="ruby">sshkey { &quot;foo.example.com&quot;:
+  ensure =&gt; absent,
+}
+</code></pre>
+
+<h4>manage entry in another ssh_known_hosts location</h4>
+
+<pre class="code ruby"><code class="ruby">sshkey { &quot;foo.example.com&quot;:
+  ensure  =&gt; present,
+  type    =&gt; &quot;ssh-rsa&quot;,
+  key     =&gt; &quot;AAADEADMEAT&quot;,
+  target  =&gt; &quot;/root/.ssh/known_hosts&quot;,
+}
+</code></pre>
+
 <h2>Issues</h2>
 
 <p>Please file any issues or suggestions <a href="https://github.com/hercules-team/augeasproviders_ssh/issues">on GitHub</a>.</p>
 </div></div>
 
-    <div id="footer">
-  Generated on Thu Jan 29 22:24:55 2015 by
+      <div id="footer">
+  Generated on Mon Jun 26 07:44:53 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-1.9.3).
+  0.9.9 (ruby-2.1.9).
 </div>
 
+    </div>
   </body>
 </html>

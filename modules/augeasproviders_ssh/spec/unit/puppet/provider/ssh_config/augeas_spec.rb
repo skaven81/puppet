@@ -29,6 +29,20 @@ describe provider_class do
 
     it "should create an array entry" do
       apply!(Puppet::Type.type(:ssh_config).new(
+        :name     => "GlobalKnownHostsFile",
+        :value    => ["/etc/ssh/ssh_known_hosts", "/etc/ssh/ssh_known_hosts2"],
+        :target   => target,
+        :provider => "augeas"
+      ))
+
+      aug_open(target, "Ssh.lns") do |aug|
+        expect(aug.get("Host/GlobalKnownHostsFile/1")).to eq("/etc/ssh/ssh_known_hosts")
+        expect(aug.get("Host/GlobalKnownHostsFile/2")).to eq("/etc/ssh/ssh_known_hosts2")
+      end
+    end
+
+    it "should create an array entry" do
+      apply!(Puppet::Type.type(:ssh_config).new(
         :name     => "SendEnv",
         :value    => ["LANG", "LC_TYPE"],
         :target   => target,
@@ -135,11 +149,12 @@ describe provider_class do
         }
       }
 
-      expect(inst.size).to eq(4)
+      expect(inst.size).to eq(5)
       expect(inst[0]).to eq({:name=>"SendEnv", :ensure=>:present, :value=>["LANG", "LC_*"], :key=>"SendEnv", :host=>"*"})
-      expect(inst[1]).to eq({:name=>"HashKnownHosts", :ensure=>:present, :value=>["yes"], :key=>"HashKnownHosts", :host=>"*"})
-      expect(inst[2]).to eq({:name=>"GSSAPIAuthentication", :ensure=>:present, :value=>["yes"], :key=>"GSSAPIAuthentication", :host=>"*"})
-      expect(inst[3]).to eq({:name=>"GSSAPIDelegateCredentials", :ensure=>:present, :value=>["no"], :key=>"GSSAPIDelegateCredentials", :host=>"*"})
+      expect(inst[1]).to eq({:name=>"SendEnv", :ensure=>:present, :value=>["QUX"], :key=>"SendEnv", :host=>"*"})
+      expect(inst[2]).to eq({:name=>"HashKnownHosts", :ensure=>:present, :value=>["yes"], :key=>"HashKnownHosts", :host=>"*"})
+      expect(inst[3]).to eq({:name=>"GSSAPIAuthentication", :ensure=>:present, :value=>["yes"], :key=>"GSSAPIAuthentication", :host=>"*"})
+      expect(inst[4]).to eq({:name=>"GSSAPIDelegateCredentials", :ensure=>:present, :value=>["no"], :key=>"GSSAPIDelegateCredentials", :host=>"*"})
     end
 
     describe "when creating settings" do

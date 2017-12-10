@@ -1,5 +1,21 @@
 # Changelog
 
+## 2.1.4
+
+- Upped supported Puppet versions to include Puppet 5
+
+## 2.1.3
+
+- Test and list compatibility with Puppet 4 and latest OSes
+- Fix catalog building in spec helper under Puppet 4.6
+- Various fixes to test suite and gemset
+
+## 2.1.2
+
+- Fix fixtures lib for RSpec 3
+- Avoid shadowing variable
+- Improve tags in README
+
 ## 2.1.1
 
 - Fix metadata.json
