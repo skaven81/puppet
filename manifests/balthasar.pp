@@ -58,12 +58,12 @@ cron { 'puppet':
 # automatically.  The certs live in /etc/letsencrypt
 # and the certbot-auto utility can be used to build
 # new certificates if needed.
-wget::fetch { 'https://dl.eff.org/certbot-auto',
+wget::fetch { 'https://dl.eff.org/certbot-auto':
     destination => '/usr/bin/',
     timeout     => 30,
     verbose     => false,
 } ->
-file { '/usr/bin/certbot-auto',
+file { '/usr/bin/certbot-auto':
     ensure  => 'present',
     owner   => 'root',
     group   => 'root',
