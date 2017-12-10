@@ -82,6 +82,10 @@ service { 'ddclient':
     ensure  => 'stopped',
     enable  => 'false',
 }
+package { 'ddclient':
+    ensure  => 'absent',
+}
+
 # NoIP dynamic update client
 file { '/usr/sbin/noip2':
     mode => '0555',
