@@ -74,7 +74,7 @@ cron { 'letsencrypt-renew':
     user    => 'root',
     command => '/usr/bin/certbot-auto renew',
     minute  => '10',
-    hour    => '4,16',
+    hour    => [ '4', '16' ],
 }
 
 # Dynamic DNS (no longer in use)
