@@ -23,6 +23,7 @@ account {'ec2-user':
 
 # Add a few more authorized keys
 ssh_authorized_key { 'galaxy_note_4@aws':
+    user    => 'ec2-user',
     ensure  => 'absent',
 }
 ssh_authorized_key { 'pixel2@aws':

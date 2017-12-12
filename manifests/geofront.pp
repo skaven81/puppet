@@ -25,6 +25,7 @@ account {'root':
 # Add an extra authorized key for root's login
 # so I can login using my phone too
 ssh_authorized_key { 'galaxy_note_4@geofront':
+    user    => 'root',
     ensure  => 'absent',
 }
 ssh_authorized_key { 'pixel2@geofront':
