@@ -1,3 +1,4 @@
+# vim: ts=4 sts=4 sw=4 expandtab
 # This manifest is for configuring
 # the main Geofront host
 
@@ -39,7 +40,7 @@ account {'skaven':
     shell       => '/bin/bash',
     home_dir    => '/home/skaven',
     manage_home => false,
-    create_group => false,
+    create_group => true,
     groups      => [ 'users', 'skaven', 'wheel', 'docker' ],
 }
 account {'lori':
@@ -48,17 +49,8 @@ account {'lori':
     shell       => '/bin/bash',
     home_dir    => '/home/lori',
     manage_home => false,
-    create_group => false,
+    create_group => true,
     groups      => [ 'users', 'lori' ],
-}
-account {'winbackup':
-    ensure      => 'present',
-    uid         => 2000,
-    shell       => '/bin/bash',
-    home_dir    => '/raid/windows-backups',
-    manage_home => false,
-    create_group => false,
-    groups      => [ ],
 }
 
 # Packages
@@ -218,8 +210,8 @@ mount { '/raid':
     device => "/dev/mapper/vg_raid-lv_raid",
     ensure => "mounted",
     atboot => true,
-    fstype => 'ext3',
-    options => 'noatime,x-systemd.requires=/dev/VolGroup/lv_raid1_journal,nofail',
+    fstype => 'xfs',
+    options => 'logdev=/dev/mapper/vg_geofront-lv_raid_journal,x-systemd.requires=/dev/mapper/vg_geofront-lv_raid_journal,nofail',
     pass    => 0,
     dump    => 0,
 } ->
@@ -375,7 +367,7 @@ sysctl { 'fs.inotify.max_user_watches': value => '1048576' }
 sysctl { 'net.ipv4.ip_forward': value => '1' }
 
 # Docker configuration
-package { 'docker-engine':
+package { 'docker-ce':
     ensure => 'installed',
 } ->
 service { 'docker':
@@ -386,3 +378,54 @@ file { '/var/run/docker.sock':
     owner => 'root',
     group => 'docker',
 }
+
+# Set up NFS
+package { 'nfs-utils':
+    ensure  => 'present',
+} ->
+file { '/etc/exports':
+    ensure  => 'file',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0444',
+    content => '/raid 192.168.86.0/24(rw,sync,root_squash)
+',
+    notify  => Exec['exportfs'],
+} ->
+service { 'nfs-server':
+    ensure  => 'running',
+}
+exec { 'exportfs':
+    refreshonly => true,
+    command     => "/usr/sbin/exportfs -a",
+}
+
+# Disable the firewall
+service { 'firewalld':
+    ensure => 'stopped',
+}
+
+# Disable selinux
+file { '/etc/sysconfig/selinux':
+    ensure => 'link',
+    target => '/etc/selinux/config',
+}
+file { '/etc/selinux/config':
+    ensure => 'file',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0444',
+    content => '# This file controls the state of SELinux on the system.
+# SELINUX= can take one of these three values:
+#     enforcing - SELinux security policy is enforced.
+#     permissive - SELinux prints warnings instead of enforcing.
+#     disabled - No SELinux policy is loaded.
+SELINUX=disabled
+# SELINUXTYPE= can take one of three two values:
+#     targeted - Targeted processes are protected,
+#     minimum - Modification of targeted policy. Only selected processes are protected. 
+#     mls - Multi Level Security protection.
+SELINUXTYPE=targeted 
+',
+}
+ 
