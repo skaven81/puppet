@@ -130,6 +130,10 @@ service { 'noip2':
     start => '/usr/sbin/noip2 -c /etc/noip.cfg',
 }
 
+# These packages are needed so postfix can do SASL auth to Gmail
+package { ['cyrus-sasl', 'cyrus-sasl-lib', 'cyrus-sasl-plain']:
+    ensure => 'installed',
+}
 # Mail relay configuration
 # NOTE: geofront's FQDN needs to be listed first in /etc/hosts next to
 # its IP address:
@@ -140,6 +144,11 @@ class { '::postfix::server':
     extra_main_parameters => {
         smtp_use_tls => 'yes',
         smtp_sasl_auth_enable => 'yes',
+        inet_protocols => 'ipv4',
+        # the /etc/postfix/password file has to contain
+        # [smtp.gmail.com]:587  <gmail account>:<app password>
+        # then run /usr/sbin/postmap /etc/postfix/password
+        # See https://support.google.com/accounts/answer/185833?hl=en
         smtp_sasl_password_maps => 'hash:/etc/postfix/password',
         smtp_sasl_security_options => 'noanonymous',
         smtp_tls_CAfile => '/etc/postfix/cacert.pem',
@@ -148,14 +157,6 @@ class { '::postfix::server':
         relayhost => '[smtp.gmail.com]:587',
         },
     inet_interfaces => 'localhost',
-} ->
-file { '/etc/postfix/password':
-    ensure  => 'file',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0400',
-    content => "[smtp.gmail.com]:587 paul.krizak@gmail.com:skfzjiuxelpegpxw\n",
-    notify  => Exec['postmap'],
 } ->
 file { '/etc/postfix/cacert.pem':
     ensure  => 'file',
@@ -182,11 +183,6 @@ A4GBAFjOKer89961zgK5F7WF0bnj4JXMJTENAKaSbn+2kmOeUJXRmm/kEd5jhW6Y
 7qj/WsjTVbJmcVfewCHrPSqnI0kBBIZCe/zuf6IWUrVnZ9NA2zsmWLIodz2uFHdh
 1voqZiegDfqnc1zqcPGUIWVEX/r87yloqaKHee9570+sB3c4
 -----END CERTIFICATE-----\n",
-}
-exec { 'postmap':
-    refreshonly => true,
-    command     => "/usr/sbin/postmap /etc/postfix/password",
-    creates     => "/etc/postfix/password.db",
 }
  
 class { '::ntp':
