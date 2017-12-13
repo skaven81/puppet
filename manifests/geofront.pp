@@ -207,7 +207,7 @@ mount { '/raid':
     ensure => "mounted",
     atboot => true,
     fstype => 'xfs',
-    options => 'logdev=/dev/mapper/vg_geofront-lv_raid_journal,x-systemd.requires=/dev/mapper/vg_geofront-lv_raid_journal,nofail',
+    options => 'noatime,logdev=/dev/mapper/vg_geofront-lv_raid_journal,x-systemd.requires=/dev/mapper/vg_geofront-lv_raid_journal,nofail',
     pass    => 0,
     dump    => 0,
 } ->
