@@ -448,7 +448,7 @@ file { '/etc/exports':
     owner   => 'root',
     group   => 'root',
     mode    => '0444',
-    content => '/raid 192.168.86.0/24(rw,sync,root_squash,no_subtree_check)
+    content => '/raid 192.168.86.0/24(rw,async,root_squash,no_subtree_check)
 ',
     notify  => Exec['exportfs'],
 } ->
