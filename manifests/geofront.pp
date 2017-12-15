@@ -428,7 +428,7 @@ RPCIDMAPDARGS=""
 # Note: The rpc-gssd service will not start unless the 
 #       file /etc/krb5.keytab exists. If an alternate
 #       keytab is needed, that separate keytab file
-#       location may be defined in the rpc-gssd.service's
+#       location may be defined in the rpc-gssd.services
 #       systemd unit file under the ConditionPathExists
 #       parameter
 RPCGSSDARGS=""
