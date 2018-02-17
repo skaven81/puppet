@@ -73,6 +73,7 @@ file { '/etc/cron.weekly/astro_photo_cleanup':
     mode    => '0755',
     content => '#!/bin/bash
 IFS=$\'\n\t\'
+find /raid/astro_photos -name DELETE* -delete
 for ext in avi nef tif; do
     find /raid/astro_photos -mtime +7 -iname *.$ext | \
     while read line; do 
@@ -82,7 +83,16 @@ done
 ',
 }
 
-# cups configuration
+# ### cups configuration ###
+# This just sets up the server.  You still have to add the printer:
+# 1. Download the ML1660 Linux drivers (should be in /raid/linux-drivers)
+# 2. Install the Linux drivers (creates some dirs in /opt and drops the
+#       raster bits into /usr/lib/cups/filter/)
+# 3. Go to https://geofront:631
+# 4. Add printer, use local detected USB
+# 5. When prompted, use PPD from the driver tarball (noarch/share/ppd...)
+#
+# Access the printer using the URI `http://geofront:631/printers/ml1660`
 package { 'cups':
     ensure  => 'installed',
 } ->
