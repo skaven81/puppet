@@ -66,11 +66,19 @@ cron { 'puppet':
     hour    => 12,
 }
 
-cron { 'hpdm1z-kerberos':
+cron { 'kerberos-cleanup-mp4':
     ensure  => 'present',
     user    => 'root',
-    command => 'curl --max-time 1 --fail -s http://hpdm1z:501/login >/dev/null || echo "kerberos:501 is not responding"',
+    command => "find /raid/kerberos/*/capture -name '*.mp4' -mtime +7 -ls -delete",
     minute  => 0,
+    hour    => 2,
+}
+cron { 'kerberos-cleanup-jpg':
+    ensure  => 'present',
+    user    => 'root',
+    command => "find /raid/kerberos/*/capture -name '*.jpg' -mtime +7 -ls -delete",
+    minute  => 0,
+    hour    => 2,
 }
 
 file { '/etc/cron.weekly/astro_photo_cleanup':
