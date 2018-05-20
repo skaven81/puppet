@@ -69,7 +69,7 @@ cron { 'puppet':
 cron { 'hpdm1z-kerberos':
     ensure  => 'present',
     user    => 'root',
-    command => 'curl --max-time 1 --fail -s http://hpdm1z:501/login >/dev/null || echo "kerberos:501 is not responding"'
+    command => 'curl --max-time 1 --fail -s http://hpdm1z:501/login >/dev/null || echo "kerberos:501 is not responding"',
     minute  => 0,
 }
 
