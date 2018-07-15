@@ -80,6 +80,15 @@ cron { 'kerberos-cleanup-jpg':
     minute  => 0,
     hour    => 2,
 }
+cron { 'kerberos-weekly-restart':
+    ensure  => 'present',
+    user    => 'root',
+    command => 'systemctl restart kerberos',
+    minute  => 0,
+    hour    => 1,
+    weekday => 1, # monday
+}
+
 
 file { '/etc/cron.weekly/astro_photo_cleanup':
     ensure  => 'present',
