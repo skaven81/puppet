@@ -41,6 +41,7 @@ account {'skaven':
     home_dir    => '/home/skaven',
     manage_home => false,
     create_group => true,
+    password    => '$6$hcePahp.$GYkEUl6b9RUTwbBhKHXRLKqlbHgzSwo1NDB.Tx1P5J2Kj11Qq7JPZZJ9F.WqPB6wIRCY1BEcYQcr.nr4hGvhv/',
     groups      => [ 'users', 'skaven', 'wheel', 'docker' ],
 }
 account {'lori':
@@ -351,19 +352,27 @@ sshd_config { "ListenAddress":
     value  => "192.168.86.50",
     notify => Service['sshd'],
 }
+# Root should only be able to login with a pubkey
+# via SSH.  Note that root can still get in via
+# the physical console with a password.
 sshd_config { "PermitRootLogin":
     ensure => present,
-    value  => "yes",
+    value  => "without-password",
     notify => Service['sshd'],
 }
+# This makes it so we only have to secure two accounts
 sshd_config { "AllowUsers":
     ensure => present,
     value  => [ "skaven", "root" ],
     notify => Service['sshd'],
 }
+# So that the PAM stack gets invoked for passwords, if
+# a pubkey is not present.  Google authenticator is required
+# as well if password auth is used.
 sshd_config { "PasswordAuthentication":
     ensure => present,
-    value  => "no", notify => Service['sshd'],
+    value  => "yes",
+    notify => Service['sshd'],
 }
 sshd_config { "AuthorizedKeysFile":
     ensure => present,
@@ -514,3 +523,40 @@ SELINUXTYPE=targeted
 ',
 }
  
+package { 'epel-release-7-11':
+    ensure => 'present',
+    provider => 'rpm',
+    source => 'https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm',
+}
+
+# Configure Google Authenticator TOTP
+# https://www.digitalocean.com/community/tutorials/how-to-set-up-multi-factor-authentication-for-ssh-on-centos-7
+package { 'google-authenticator':
+    ensure => 'present',
+}
+file_line { 'ssh-google-pam':
+    path => '/etc/pam.d/sshd',
+    line => 'auth required pam_google_authenticator.so',
+}
+sshd_config { "ChallengeResponseAuthentication":
+    ensure => present,
+    value  => "yes",
+    notify => Service['sshd'],
+}
+# keyboard-interactive invokes the PAM stack
+# for AuthN, which due to the update above
+# to include the pam_google_authenticator module,
+# results in a password + token check.  For
+# pubkey auth, the PAM stack is bypassed, so
+# no token challenge is used.  If we want pubkey+token
+# OR password+token, that can't be done, because both
+# password and token are handled by the same keyboard-interactive
+# directive via PAM.  So the configuration below allows
+# pubkey (without token; no PAM) or password+token, for users
+# with UIDs >= 1000 (as defined in /etc/pam.d/password-auth).
+sshd_config { "AuthenticationMethods":
+    ensure => present,
+    value => "publickey keyboard-interactive",
+    notify => Service['sshd'],
+}
+
