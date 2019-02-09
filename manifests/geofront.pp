@@ -99,6 +99,21 @@ done
 ',
 }
 
+# Shutdown and restart containers since they tend to grow due
+# to logs and stuff that haven't been offloaded to host paths
+file { '/etc/cron.weekly/homeservices_restart':
+    ensure  => 'present',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0755',
+    content => '#!/bin/bash
+PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin
+cd ~skaven/git/HomeServices
+docker-compose down
+docker-compose up -d
+',
+}
+
 # ### cups configuration ###
 # This just sets up the server.  You still have to add the printer:
 # 1. Download the ML1660 Linux drivers (should be in /raid/linux-drivers)
