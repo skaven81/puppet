@@ -24,12 +24,3 @@ package { 'postfix':
     ensure => 'absent',
 }
 
-class { '::ntp':
-    ignore_local_clock => true,
-}
-
-# Hosts file and nsswitch
-class { 'nsswitch':
-    hosts => ['files', 'dns'],
-}
-
