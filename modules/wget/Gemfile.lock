@@ -244,7 +244,7 @@ GEM
       puppet-syntax
       rake
       rspec-puppet
-    rake (10.5.0)
+    rake (12.3.3)
     rbvmomi (1.8.2)
       builder
       nokogiri (>= 1.4.1)
