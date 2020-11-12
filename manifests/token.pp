@@ -24,3 +24,9 @@ package { 'postfix':
     ensure => 'absent',
 }
 
+# Ensure we can always reach Geofront, even
+# when connected to VPN
+host { 'geofront':
+    ensure => 'present',
+    ip     => '192.168.86.50',
+}
