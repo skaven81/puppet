@@ -244,7 +244,7 @@ ARRAY /dev/md127 devices=/dev/sd[bcde]
 }
 
 mount { '/raid':
-    device => "/dev/mapper/vg_raid-lv_raid",
+    device => "/dev/mapper/vg_geofront-lv_raid",
     ensure => "mounted",
     atboot => true,
     fstype => 'xfs',
