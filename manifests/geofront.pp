@@ -67,21 +67,6 @@ cron { 'puppet':
     hour    => 12,
 }
 
-cron { 'kerberos-cleanup-mp4':
-    ensure  => 'present',
-    user    => 'root',
-    command => "find /raid/kerberos/*/capture -name '*.mp4' -mtime +7 -ls -delete",
-    minute  => 0,
-    hour    => 2,
-}
-cron { 'kerberos-cleanup-jpg':
-    ensure  => 'present',
-    user    => 'root',
-    command => "find /raid/kerberos/*/capture -name '*.jpg' -mtime +7 -ls -delete",
-    minute  => 0,
-    hour    => 2,
-}
-
 file { '/etc/cron.weekly/astro_photo_cleanup':
     ensure  => 'present',
     owner   => 'root',
@@ -109,7 +94,7 @@ file { '/etc/cron.weekly/homeservices_restart':
     content => '#!/bin/bash
 PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin
 cd ~skaven/git/HomeServices
-docker-compose down
+docker-compose down --volumes
 docker-compose up -d
 ',
 }
