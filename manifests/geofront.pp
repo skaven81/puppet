@@ -175,6 +175,7 @@ class { '::postfix::server':
         # [smtp.gmail.com]:587  <gmail account>:<app password>
         # then run /usr/sbin/postmap /etc/postfix/password
         # See https://support.google.com/accounts/answer/185833?hl=en
+        # create app passwords at https://myaccount.google.com/apppasswords
         smtp_sasl_password_maps => 'hash:/etc/postfix/password',
         smtp_sasl_security_options => 'noanonymous',
         smtp_tls_CAfile => '/etc/postfix/cacert.pem',
