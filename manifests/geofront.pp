@@ -75,6 +75,16 @@ cron { 'puppet':
     hour    => 12,
 }
 
+# Disable avahi since it can conflict with Samba
+service { 'avahi-daemon.socket':
+    ensure => 'stopped',
+    enable => 'false',
+} ->
+service { 'avahi-daemon':
+    ensure => 'stopped',
+    enable => 'false',
+}
+
 file { '/etc/cron.weekly/astro_photo_cleanup':
     ensure  => 'present',
     owner   => 'root',
@@ -475,6 +485,7 @@ file { '/etc/exports':
 } ->
 service { 'nfs-server':
     ensure  => 'running',
+    enable => 'true',
 }
 exec { 'exportfs':
     refreshonly => true,
