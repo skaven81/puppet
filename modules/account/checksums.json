@@ -1,0 +1,16 @@
+{
+  "CHANGELOG": "afd9318d63bfe20f576943ce0bc9b76f",
+  "Gemfile": "173aceff86ecbda13474c0404cf805c1",
+  "LICENSE": "d6287719356a0aec3e10a39d52040908",
+  "README.md": "9e7b232547b1c93cbb0b255251c263b5",
+  "Rakefile": "69f9d2e0ad87f4de3fbde685c9121477",
+  "manifests/init.pp": "2e449ff25724a12e1c1d0a3a3264e81c",
+  "metadata.json": "02389bc700f98d870a9ced358d87f459",
+  "spec/acceptance/create_spec.rb": "06ed7d5f405b520f24ea788cd5a89f11",
+  "spec/acceptance/nodesets/default.yml": "e90aa9f4509c962793ac08be0ed8122e",
+  "spec/defines/account_spec.rb": "af076a255d2a8c306908d3be74d1523f",
+  "spec/spec_helper.rb": "1ada069d7869a2d9223d2e6a4bf3b2a7",
+  "spec/spec_helper_acceptance.rb": "910b3a012ebc5453750b755b308d4c13",
+  "types/path.pp": "2a35217a82b126f7c82433aea406a941",
+  "types/sshkey.pp": "ef36cb1e76873f956465d6ce7920c11d"
+}

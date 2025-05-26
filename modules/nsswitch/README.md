@@ -1,9 +1,13 @@
 # nsswitch.conf module for Puppet
-[![Build Status](https://travis-ci.org/trlinkin/puppet-nsswitch.svg?branch=master)](https://travis-ci.org/trlinkin/puppet-nsswitch)
 
-A way of expressing nsswitch.conf configurations declaratively. This
-should manage the standard 15 databases NSS supports, plus the `sudo` entry
-respected by sudo since the 1.7.0 release.
+[![License](https://img.shields.io/github/license/voxpupuli/puppet-nsswitch.svg)](https://github.com/voxpupuli/puppet-nsswitch/blob/master/LICENSE)
+[![CI Status](https://github.com/voxpupuli/puppet-nsswitch/workflows/CI/badge.svg?branch=master)]((https://github.com/voxpupuli/puppet-nsswitch/workflows/CI/badge.svg?branch=master))
+[![Puppet Forge](https://img.shields.io/puppetforge/v/puppet/nsswitch.svg)](https://forge.puppetlabs.com/puppet/nsswitch)
+[![Puppet Forge - downloads](https://img.shields.io/puppetforge/dt/puppet/nsswitch.svg)](https://forge.puppetlabs.com/puppet/nsswitch)
+[![Puppet Forge - endorsement](https://img.shields.io/puppetforge/e/puppet/nsswitch.svg)](https://forge.puppetlabs.com/puppet/nsswitch)
+[![Puppet Forge - scores](https://img.shields.io/puppetforge/f/puppet/nsswitch.svg)](https://forge.puppetlabs.com/puppet/nsswitch)
+
+A way of expressing nsswitch.conf configurations declaratively.
 
 ### Defaults
 
@@ -14,27 +18,15 @@ the nsswitch.conf file on fresh install. These defaults have been verified
 on the mentioned distributions by the kindness and diligence of
 contributors, of which I'm very grateful.
 
-### Supported Systems
-This module should be capable of supporting the following systems:
- * Debian/Ubuntu
- * RHEL (Centos, RHEL6.x, Amazon)
- * Fedora
- * Oracle Linux 5.x, 6.x
- * Gentoo
-
-Testing has only confirmed functionality on the following:
-  * Ubuntu 12.4
-  * Fedora 19
-  * Centos 6/7
-  * RHEL 6/7
-
 ### Usage
+
+See [REFERENCE.md](./REFERENCE.md) for full API details.
 
 #### nsswitch class
 
 This is the class by which you will manage the nsswitch.conf file. There
-is one paramter per standard database NSS supports. The class accepts both strings 
-and arrays as paramters. The benefit being, you could possibly merge an array
+is one parameter per standard database NSS supports. The class accepts both strings
+and arrays as parameters. The benefit being, you could possibly merge an array
 of options with hiera. When using an array, each element should be the
 lookup service followed by the reaction statement.
 
@@ -55,6 +47,7 @@ Available parameters are:
 * publickey
 * rpc
 * services
+* shells
 * sudo
 
 
@@ -62,7 +55,7 @@ For more information on NSS, please see the man pages. `man 5 nsswitch.conf`
 
 #### Examples
 
-```Puppet
+```puppet
 # defaults only
 include nsswitch
 
@@ -98,55 +91,8 @@ class { 'nsswitch':
     automount:  files nisplus
     aliases:    files nisplus
 
-### Changelog
+## Authors and Module History
 
-* Change quoting of string in `params.pp`
-* Correct `.travis.yml` tests
-* Add unit tests for different EL versions
-* Cleanup metadata tabbing and add EL 7 version
-* Add Puppet/PE requirements to metadata.json
-* Add explicit support for EL 7
-* Change tabbing in params.pp
-* Remove undesirable tags from metadata
-* Merge pull request #15 from togge/master
-* added support for gshadow
-* Update Changelog and bump version to 1.1.0
-* Extend Travis-CI testing
-* Updates to the README.md
-* Fixup the travis-ci configuration
-* Removing Gemfile.lock - I was wrong
-* Update spec tests to use Rspec 3.x syntax
-* Refactor unit tests for changes in Rspec/Rspec-Puppet
-* Add changes to Gemfile and add a Gemfile.lock
-* Remove Gemfile.lock from the .gitignore
-* Fix fact name in spec tests
-* Add fixtures to .gitignore
-* add OEL supprt
-* making changes to pass lint
-* Bump version to 1.0.0
-* Adding license file
-* Further clean up metadata.json
-* Add travis-ci badge
-* Correct wrong link in metadata.json
-* Add .travis.yml for automated Travis-CI testing
-* Add .rspec file for testing purposes
-* Bump version to 0.1.0 for release
-* Convert to metadata.json
-* Add initial components of automated testing
-* Remove useless filename selection
-
-#### License
-   Copyright 2013 Thomas Linkin <tom@puppetlabs.com>
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-
+Puppet-nsswitch has been maintained by VoxPupuli since version 3.0.0.
+It was migrated from https://forge.puppet.com/modules/trlinkin/nsswitch.
+It is licensed under the Apache-2 license.

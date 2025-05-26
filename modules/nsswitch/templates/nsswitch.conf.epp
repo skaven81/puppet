@@ -1,0 +1,80 @@
+<%- |
+  Optional[Variant[String, Array]] $aliases,
+  Optional[Variant[String, Array]] $automount,
+  Optional[Variant[String, Array]] $bootparams,
+  Optional[Variant[String, Array]] $ethers,
+  Optional[Variant[String, Array]] $group,
+  Optional[Variant[String, Array]] $hosts,
+  Optional[Variant[String, Array]] $netgroup,
+  Optional[Variant[String, Array]] $netmasks,
+  Optional[Variant[String, Array]] $networks,
+  Optional[Variant[String, Array]] $passwd,
+  Optional[Variant[String, Array]] $protocols,
+  Optional[Variant[String, Array]] $publickey,
+  Optional[Variant[String, Array]] $rpc,
+  Optional[Variant[String, Array]] $services,
+  Optional[Variant[String, Array]] $shadow,
+  Optional[Variant[String, Array]] $shells,
+  Optional[Variant[String, Array]] $gshadow,
+  Optional[Variant[String, Array]] $sudoers,
+  Optional[Variant[String, Array]] $subid,
+| -%>
+# This file is controlled by Puppet
+
+<% if $passwd { -%>
+passwd:     <%= [*$passwd].join(" ") %>
+<% } -%>
+<% if $shadow { -%>
+shadow:     <%= [*$shadow].join(" ") %>
+<% } -%>
+<% if $gshadow { -%>
+gshadow:    <%= [*$gshadow].join(" ") %>
+<% } -%>
+<% if $group { -%>
+group:      <%= [*$group].join(" ") %>
+<% } -%>
+<% if $sudoers { -%>
+sudoers:    <%= [*$sudoers].join(" ") %>
+<% } -%>
+<% if $hosts { -%>
+hosts:      <%= [*$hosts].join(" ") %>
+<% } -%>
+<% if $bootparams { -%>
+bootparams: <%= [*$bootparams].join(" ") %>
+<% } -%>
+<% if $ethers { -%>
+ethers:     <%= [*$ethers].join(" ") %>
+<% } -%>
+<% if $netmasks { -%>
+netmasks:   <%= [*$netmasks].join(" ") %>
+<% } -%>
+<% if $networks { -%>
+networks:   <%= [*$networks].join(" ") %>
+<% } -%>
+<% if $protocols { -%>
+protocols:  <%= [*$protocols].join(" ") %>
+<% } -%>
+<% if $rpc { -%>
+rpc:        <%= [*$rpc].join(" ") %>
+<% } -%>
+<% if $services { -%>
+services:   <%= [*$services].join(" ") %>
+<% } -%>
+<% if $netgroup { -%>
+netgroup:   <%= [*$netgroup].join(" ") %>
+<% } -%>
+<% if $publickey { -%>
+publickey:  <%= [*$publickey].join(" ") %>
+<% } -%>
+<% if $automount { -%>
+automount:  <%= [*$automount].join(" ") %>
+<% } -%>
+<% if $aliases { -%>
+aliases:    <%= [*$aliases].join(" ") %>
+<% } -%>
+<% if $shells { -%>
+shells:    <%= [*$shells].join(" ") %>
+<% } -%>
+<% if $subid { -%>
+subid:     <%= [*$subid].join(" ") %>
+<% } -%>

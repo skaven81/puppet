@@ -10,6 +10,10 @@ Package {
     allow_virtual => true
 }
 
+class { selinux:
+    mode => 'disabled',
+}
+
 account {'root':
     ensure  => 'present',
     uid     => 0,
@@ -18,9 +22,13 @@ account {'root':
     manage_home => true,
     create_group => true,
     groups  => [ 'bin', 'daemon', 'sys', 'adm', 'disk', 'wheel' ],
-    ssh_key => $::pubkeys::token,
-    ssh_key_type => $::pubkeys::token_type,
-    purge_ssh_keys => true,
+    ssh_keys => {
+      'access' => {
+        key => $::pubkeys::token,
+        type => $::pubkeys::token_type,
+      }
+    },
+    #purge_ssh_keys => true,
     password => '$6$Fu6Hrk4t$BCSShVBvCp6XNActMOxyL/EQhqssmKgaydXbNMOG7nulTnXJRgRLpkXxo30pzuMK8AL/qDcphbWplejFrC67Y1',
 }
 # Add an extra authorized key for root's login
@@ -34,7 +42,7 @@ account {'skaven':
     ensure      => 'present',
     uid         => 1000,
     shell       => '/bin/bash',
-    home_dir    => '/home/skaven',
+    home_dir    => '/user/skaven',
     manage_home => false,
     create_group => true,
     password    => '$6$hcePahp.$GYkEUl6b9RUTwbBhKHXRLKqlbHgzSwo1NDB.Tx1P5J2Kj11Qq7JPZZJ9F.WqPB6wIRCY1BEcYQcr.nr4hGvhv/',
@@ -44,7 +52,7 @@ account {'lori':
     ensure      => 'present',
     uid         => 500,
     shell       => '/bin/bash',
-    home_dir    => '/home/lori',
+    home_dir    => '/user/lori',
     manage_home => false,
     create_group => true,
     groups      => [ 'users', 'lori' ],
@@ -104,13 +112,16 @@ docker-compose up -d
 # 1. Download the ML1660 Linux drivers (should be in /raid/linux-drivers)
 # 2. Install the Linux drivers (creates some dirs in /opt and drops the
 #       raster bits into /usr/lib/cups/filter/)
-# 3. Go to https://geofront:631
+# 3. Go to https://geofront:631 (login as skaven)
 # 4. Add printer, use local detected USB
 # 5. When prompted, use PPD from the driver tarball (noarch/share/ppd...)
 #
 # Access the printer using the URI `http://geofront:631/printers/ml1660`
 package { 'cups':
     ensure  => 'installed',
+} ->
+package { 'sane-backends':
+    ensure => 'installed',
 } ->
 file { '/etc/cups/cupsd.conf':
     ensure  => 'present',
@@ -123,37 +134,6 @@ file { '/etc/cups/cupsd.conf':
 service { 'cups':
     ensure  => 'running',
     enable  => true,
-}
-
-# ddclient configuration (no longer used)
-service { 'ddclient':
-    ensure  => 'stopped',
-    enable  => 'false',
-}
-package { 'ddclient':
-    ensure  => 'absent',
-}
-
-# NoIP dynamic update client
-file { '/usr/sbin/noip2':
-    mode => '0555',
-    owner => 'root',
-    group => 'root',
-    source => 'puppet:///modules/noip/noip2-x86_64',
-} ->
-file { '/etc/noip.cfg':
-    mode => '0444',
-    owner => 'root',
-    group => 'root',
-    source => '/etc/noip-master.cfg',
-} ~>
-service { 'noip2':
-    ensure => 'running',
-    binary => '/usr/sbin/noip2',
-    hasrestart => 'false',
-    hasstatus => 'false',
-    provider => 'base',
-    start => '/usr/sbin/noip2 -c /etc/noip.cfg',
 }
 
 # These packages are needed so postfix can do SASL auth to Gmail
@@ -211,9 +191,13 @@ A4GBAFjOKer89961zgK5F7WF0bnj4JXMJTENAKaSbn+2kmOeUJXRmm/kEd5jhW6Y
 1voqZiegDfqnc1zqcPGUIWVEX/r87yloqaKHee9570+sB3c4
 -----END CERTIFICATE-----\n",
 }
+
+package { 's-nail':
+    ensure => 'installed'
+}
  
-class { '::ntp':
-    ignore_local_clock => true,
+class { 'chrony':
+    #ignore_local_clock => true,
 }
 
 
@@ -249,8 +233,8 @@ file { '/raid5':
 file { '/raid6':
     ensure => 'link',
     target => '/raid',
-} ->
-file { '/home':
+}
+file { '/user':
     ensure => 'link',
     target => '/raid6/user',
 }
@@ -276,7 +260,7 @@ file { '/etc/sysconfig/raid-check':
 #		the data should be, for example the parity block + the other
 #		data blocks would cause us to think that this data block
 #		is incorrect), then it does nothing but increments the
-#		counter in the file /sys/block/$dev/md/mismatch_count.
+#		counter in the file /sys/block/\$dev/md/mismatch_count.
 #		This allows the sysadmin to inspect the data in the sector
 #		and the data that would be produced by rebuilding the
 #		sector from redundant information and pick the correct
@@ -398,16 +382,18 @@ sysctl { 'fs.inotify.max_user_watches': value => '1048576' }
 sysctl { 'net.ipv4.ip_forward': value => '1' }
 
 # Docker configuration
+file { '/etc/yum.repos.d/docker-ce.repo':
+    ensure => 'present',
+    source => 'https://download.docker.com/linux/rhel/docker-ce.repo',
+} ->
 package { 'docker-ce':
-    ensure => 'installed',
+    ensure => 'latest',
 } ->
 service { 'docker':
     ensure => 'running',
-    enable => 'true',
-} ->
-file { '/var/run/docker.sock':
-    owner => 'root',
-    group => 'docker',
+}
+package { 'docker-compose-plugin':
+    ensure => 'latest',
 }
 
 # Set up NFS
@@ -524,7 +510,7 @@ SELINUXTYPE=targeted
 ',
 }
  
-package { 'epel-release-latest-9':
+package { 'epel-release':
     ensure => 'present',
     provider => 'rpm',
     source => 'https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm',

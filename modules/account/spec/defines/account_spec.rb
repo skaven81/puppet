@@ -10,7 +10,7 @@ describe 'account' do
         'name'   => title,
         'system' => false,
         'gid'    => nil,
-        'before' => "User[#{title}]",
+        'before' => ["User[#{title}]"],
       })
     end
 
@@ -26,7 +26,8 @@ describe 'account' do
         'home'       => "/home/#{title}",
         'managehome' => true,
         'system'     => false,
-        'before'     => "File[#{title}_home]",
+        'allowdupe'  => false,
+        'before'     => ["File[#{title}_home]"],
       })
     end
 
@@ -37,7 +38,8 @@ describe 'account' do
         'owner'   => title,
         'group'   => title,
         'mode'    => '0750',
-        'before'  => "File[#{title}_sshdir]",
+        'before'  => ["File[#{title}_sshdir]"],
+        'force'   => false,
       })
     end
 
@@ -48,6 +50,7 @@ describe 'account' do
         'owner'   => title,
         'group'   => title,
         'mode'    => '0700',
+        'force'   => false,
       })
     end
   end
@@ -55,13 +58,16 @@ describe 'account' do
   describe 'account with custom values' do
     let( :title ) { 'admin' }
     let( :params ) {{
-      :username    => 'sysadmin',
-      :shell       => '/bin/zsh',
-      :manage_home => false,
-      :home_dir    => '/opt/admin',
-      :system      => true,
-      :uid         => 777,
-      :groups      => [ 'sudo', 'users' ],
+      :username       => 'sysadmin',
+      :shell          => '/bin/zsh',
+      :manage_home    => false,
+      :home_dir       => '/opt/admin',
+      :home_dir_perms => '0700',
+      :system         => true,
+      :uid            => 777,
+      :allowdupe      => true,
+      :purge          => true,
+      :groups         => [ 'sudo', 'users' ],
     }}
 
     it do
@@ -82,6 +88,7 @@ describe 'account' do
         'home'        => params[:home_dir],
         'manage_home' => params[:manage_home] == false ? nil : true,
         'system'      => params[:system],
+        'allowdupe'   => params[:allowdupe],
       })
     end
 
@@ -90,14 +97,17 @@ describe 'account' do
         'path'  => params[:home_dir],
         'owner' => params[:username],
         'group' => params[:username],
+        'mode'  => params[:home_dir_perms],
+        'force' => true,
       })
     end
 
-    it do 
+    it do
       should contain_file( "#{title}_sshdir" ).with({
         'path' => "#{params[:home_dir]}/.ssh",
         'owner' => params[:username],
         'group' => params[:username],
+        'force' => true,
       })
     end
   end
