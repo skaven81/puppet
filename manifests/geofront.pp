@@ -25,10 +25,6 @@ account {'root':
 }
 # Add an extra authorized key for root's login
 # so I can login using my phone too
-ssh_authorized_key { 'galaxy_note_4@geofront':
-    user    => 'root',
-    ensure  => 'absent',
-}
 ssh_authorized_key { 'pixel2@geofront':
     user    => 'root',
     key     => $::pubkeys::pixel2,
@@ -55,8 +51,12 @@ account {'lori':
 }
 
 # Packages
-package { [ 'puppet' ]:
+package { [ 'openvox-agent' ]:
     ensure  => 'latest',
+} ->
+file { '/usr/bin/puppet':
+    ensure => 'link',
+    target => '/opt/puppetlabs/bin/puppet',
 }
 
 cron { 'puppet':
@@ -524,10 +524,10 @@ SELINUXTYPE=targeted
 ',
 }
  
-package { 'epel-release-7-11':
+package { 'epel-release-latest-9':
     ensure => 'present',
     provider => 'rpm',
-    source => 'https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm',
+    source => 'https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm',
 }
 
 # Configure Google Authenticator TOTP
