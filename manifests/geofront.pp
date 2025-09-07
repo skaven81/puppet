@@ -117,35 +117,6 @@ docker-compose up -d
 ',
 }
 
-# ### cups configuration ###
-# This just sets up the server.  You still have to add the printer:
-# 1. Download the ML1660 Linux drivers (should be in /raid/linux-drivers)
-# 2. Install the Linux drivers (creates some dirs in /opt and drops the
-#       raster bits into /usr/lib/cups/filter/)
-# 3. Go to https://geofront:631 (login as skaven)
-# 4. Add printer, use local detected USB
-# 5. When prompted, use PPD from the driver tarball (noarch/share/ppd...)
-#
-# Access the printer using the URI `http://geofront:631/printers/ml1660`
-package { 'cups':
-    ensure  => 'installed',
-} ->
-package { 'sane-backends':
-    ensure => 'installed',
-} ->
-file { '/etc/cups/cupsd.conf':
-    ensure  => 'present',
-    owner   => 'root',
-    group   => 'lp',
-    mode    => '0640',
-    content => template("cups/cupsd.conf"),
-    notify  => Service['cups'],
-} ->
-service { 'cups':
-    ensure  => 'running',
-    enable  => true,
-}
-
 # These packages are needed so postfix can do SASL auth to Gmail
 package { ['cyrus-sasl', 'cyrus-sasl-lib', 'cyrus-sasl-plain']:
     ensure => 'installed',
